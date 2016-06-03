@@ -40,7 +40,8 @@ const WMSCrossLayerFilter = React.createClass({
             actions: {
                 onQuery: () => {},
                 onReset: () => {},
-                changeMapView: () => {}
+                changeMapView: () => {},
+                changeDrawingStatus: () => {}
             }
         };
     },
@@ -112,7 +113,7 @@ const WMSCrossLayerFilter = React.createClass({
 
         let params = assign({}, this.props.params, {cql_filter: filter});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
-
+        this.props.actions.changeDrawingStatus('start', 'BBOX', 'wmscrossfilter', []);
         // Zoom to the selected geometry
         if (this.props.spatialField.geometry && this.props.spatialField.geometry.extent) {
             const bbox = this.props.spatialField.geometry.extent;
@@ -135,6 +136,7 @@ const WMSCrossLayerFilter = React.createClass({
     },
     reset() {
         this.props.actions.onReset();
+        this.props.actions.changeDrawingStatus('clean', 'BBOX', 'wmscrossfilter', []);
         let params = assign(this.props.params, {cql_filter: "INCLUDE"});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
     }

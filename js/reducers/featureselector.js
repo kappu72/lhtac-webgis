@@ -1,0 +1,56 @@
+/**
+ * Copyright 2016, GeoSolutions Sas.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ **/
+
+const {
+    END_DRAWING
+} = require('../../Mapstore2/web/client/actions/draw');
+const {
+    FEATURES_LOADED,
+    NEW_GETFEATURE_REQUEST,
+    FEATURE_SELECTOR_ERROR
+} = require('../actions/featureselector');
+const assign = require('object-assign');
+
+const initialState = {geometry: null, features: [], request: {}};
+
+function featureLoaded(add, newFeatures, previousFeatures) {
+    return (add) ?
+           [...previousFeatures, ...newFeatures.reduce((ar, f) => {
+               if (previousFeatures.findIndex((pf) => {
+                   return f.id === pf.id;
+               }) === -1) {
+                   ar.push(f);
+               }
+               return ar;
+           }, [])] : newFeatures;
+}
+
+
+function featureselector(state = initialState, action) {
+    switch (action.type) {
+        case END_DRAWING: {
+            return assign({}, state, {geometry: action.geometry, geometryOwner: action.owner, geometryStatus: "created"});
+        }
+        case FEATURES_LOADED: {
+            let req = {...state.request, state: "loaded"};
+            let features = featureLoaded(action.add, action.features, state.features);
+            return assign({}, state, {features: features, geometryStatus: "consumed", request: req});
+
+        }
+        case NEW_GETFEATURE_REQUEST: {
+            return {...state, geometryStatus: "consumed", request: {id: action.reqId, state: "loading", filter: action.filter }};
+        }
+        case FEATURE_SELECTOR_ERROR: {
+            return {...state, error: action.error, geometryStatus: "consumed", geometry: undefined, request: {}};
+        }
+        default:
+            return state;
+    }
+}
+
+module.exports = featureselector;

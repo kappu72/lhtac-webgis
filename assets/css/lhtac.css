@@ -150,3 +150,34 @@
     cursor: pointer;
     padding-top: 5px;
 }
+
+#crashs-selection-bar {
+    position: absolute;
+    top: 50px;
+    left: 45px;
+    z-index: 100;
+    width:180px;
+}
+#crashs-selection-bar .rw-dropdownlist{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left:0px;
+}
+#crashs-selection-bar .input-group-addon{
+    background-color: white;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    cursor: pointer;
+}
+#crashs-selection-bar .input-group-addon-disabled{
+    background-color: #eeeeee;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    cursor: pointer;
+}
+#crashs-selection-bar .input-group {
+    box-shadow: 2px 2px 4px #A7A7A7;
+    border-radius: 4px;
+}

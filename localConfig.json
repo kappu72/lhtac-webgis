@@ -8,6 +8,7 @@
 		"desktop": [{
 			"name": "Map",
 			"cfg": {
+				"tools": ["measurement", "locate", "overview", "scalebar", "draw"],
 				"toolsOptions": {
 					"scalebar": {
 						"leaflet": {
@@ -20,7 +21,7 @@
 					}
 				}
 			}
-		}, "Identify", {
+		},"Identify", {
 				"name": "Locate",
 				"hide": true
 		}, {
@@ -73,6 +74,6 @@
 		}, {
 				"name": "ContextSwitch",
 				"hide": true
-		}, "MousePosition", "Search", "ScaleBox", "ZoomAll", "MapLoading", "Snapshot", "Help"]
+		}, "MousePosition", "Search", "ScaleBox", "ZoomAll", "MapLoading", "Snapshot", "Help", "FeatureSelector"]
 	}
 }

@@ -13,7 +13,8 @@ const {Glyphicon, Panel} = require('react-bootstrap');
 const AccordionPanel = require("./AccordionPanel");
 
 const Statistics = connect((state) => ({
-    activeLayer: state.lhtac.activeLayer
+    activeLayer: state.lhtac.activeLayer,
+    selectedfeatures: state.featureselector.features.length
 }), {})(require("../components/Statistics"));
 
 const SidePanel = React.createClass({

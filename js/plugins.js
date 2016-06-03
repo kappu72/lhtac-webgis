@@ -28,7 +28,8 @@ module.exports = {
         HelpPlugin: require('../MapStore2/web/client/plugins/Help'),
         AboutPlugin: require('./plugins/About'),
         ContactUsPlugin: require('./plugins/ContactUs'),
-        ContextSwitchPlugin: require('./plugins/ContextSwitch')
+        ContextSwitchPlugin: require('./plugins/ContextSwitch'),
+        FeatureSelectorPlugin: require('./plugins/FeatureSelector')
     },
     requires: {}
 };

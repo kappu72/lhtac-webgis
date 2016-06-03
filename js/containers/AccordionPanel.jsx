@@ -26,6 +26,10 @@ const {
     changeLayerProperties
 } = require('../../MapStore2/web/client/actions/layers');
 
+const {
+    changeDrawingStatus
+} = require('../../MapStore2/web/client/actions/draw');
+
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,
     spatialField: state.queryform.spatialField,
@@ -56,6 +60,7 @@ const WMSCrossLayerFilter = connect((state) => ({
 }), (dispatch) => {
     return {
         actions: bindActionCreators({
+            changeDrawingStatus: changeDrawingStatus,
             onQuery: changeLayerProperties,
             onReset: resetZones,
             changeMapView

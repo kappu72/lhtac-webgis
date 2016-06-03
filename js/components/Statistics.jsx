@@ -16,10 +16,12 @@ const Legend = require('../../MapStore2/web/client/components/TOC/fragments/lege
 
 const Statistics = React.createClass({
     propTypes: {
-        activeLayer: React.PropTypes.object
+        activeLayer: React.PropTypes.object,
+        selectedfeatures: React.PropTypes.number
     },
     getDefaultProps() {
         return {
+            selectedfeatures: 0,
             activeLayer: {
                 statistics: [],
                 legend: {
@@ -35,7 +37,7 @@ const Statistics = React.createClass({
             <div>
                 <Panel header="Download and statistics" collapsible>
                     <ListGroup className="lhtac-group-list">
-                        <ListGroupItem key={1}>Selected: 0</ListGroupItem>
+                        <ListGroupItem key={1}>Selected: {this.props.selectedfeatures}</ListGroupItem>
                         <ListGroupItem key={2}>Highlighted: 0</ListGroupItem>
                     </ListGroup>
                     <ListGroup className="lhtac-group-list">
