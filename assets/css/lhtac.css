@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+
 #left-edge {
     width: 4px;
     height: 100%;
@@ -180,4 +181,7 @@
 #crashs-selection-bar .input-group {
     box-shadow: 2px 2px 4px #A7A7A7;
     border-radius: 4px;
+}
+.search-result-list {
+    z-index: 2000
 }
