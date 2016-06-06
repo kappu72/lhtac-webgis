@@ -171,7 +171,32 @@
                 "value": 4204
             }
         ]
-			}
+			},
+            {
+                "type": "vector",
+                "name": "Selected items",
+                "id": "featureselector",
+                "features": [],
+                "crs": "EPSG:4326",
+                "hideLoading": true,
+                "visibility": true,
+                "style": {
+                    "type": "Point",
+                    "radius": 10,
+                    "stroke": {
+                        "width": 3,
+                        "color": "blue"
+                    },
+                    "fill": {
+                        "color": "rgba(0, 0, 255, 0.5)"
+                    },
+                "weight": 3,
+                "opacity": 1,
+                "fillOpacity": 0.5,
+                "color": "blue",
+                "fillColor": "blue"
+        }
+}
     ]
   }
 }

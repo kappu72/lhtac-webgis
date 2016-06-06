@@ -48,6 +48,9 @@ function featureselector(state = initialState, action) {
         case FEATURE_SELECTOR_ERROR: {
             return {...state, error: action.error, geometryStatus: "consumed", geometry: undefined, request: {}};
         }
+        case 'ZONES_RESET': {
+            return initialState;
+        }
         default:
             return state;
     }

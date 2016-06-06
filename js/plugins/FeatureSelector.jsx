@@ -20,9 +20,18 @@ const LocaleUtils = require('../../MapStore2/web/client/utils/LocaleUtils');
 const {
     changeDrawingStatus
 } = require('../../MapStore2/web/client/actions/draw');
-const { loadFeatures, featureSelectorError} = require('../actions/featureselector');
+const {
+    loadFeatures,
+    featureSelectorError} = require('../actions/featureselector');
+const {
+    addLayer,
+    changeLayerProperties
+} = require('../../MapStore2/web/client/actions/layers');
+
+
 const FeatureSelector = React.createClass({
     propTypes: {
+        drawFeatures: React.PropTypes.bool,
         activeLayer: React.PropTypes.object,
         request: React.PropTypes.object,
         drawMethod: React.PropTypes.string,
@@ -31,9 +40,12 @@ const FeatureSelector = React.createClass({
         geometryStatus: React.PropTypes.string,
         open: React.PropTypes.bool,
         spatialMethodOptions: React.PropTypes.array,
+        features: React.PropTypes.array,
         changeDrawingStatus: React.PropTypes.func,
         loadFeatures: React.PropTypes.func,
         featureSelectorError: React.PropTypes.func,
+        addLayer: React.PropTypes.func,
+        changeLayerProperties: React.PropTypes.func,
         error: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool])
     },
     contextTypes: {
@@ -41,24 +53,41 @@ const FeatureSelector = React.createClass({
     },
     getDefaultProps() {
         return {
+            drawFeatures: true,
             drawMethod: "Polygon",
             spatialMethodOptions: [
                 {id: "BBOX", name: "queryform.spatialfilter.methods.box"},
                 {id: "Polygon", name: "queryform.spatialfilter.methods.poly"}
             ],
             changeDrawingStatus: () => {},
-            loadFeatures: () => {}
+            loadFeatures: () => {},
+            addLayer: () => {},
+            changeLayerProperties: () => {}
         };
     },
     componentDidMount() {
+        this.key = (navigator && navigator.platform && navigator.platform === 'MacIntel') ? 'altKey' : 'ctrlKey';
+        this.addKey = false;
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
+
     },
         componentWillUnmount() {
         window.removeEventListener("keydown", this.handleKeyDown);
         window.removeEventListener("keyup", this.handleKeyUp);
     },
     componentWillReceiveProps(nextProps) {
+        if (nextProps.drawStatus === "start" && nextProps.open) {
+            window.addEventListener("keydown", this.handleKeyDown);
+            window.addEventListener("keyup", this.handleKeyUp);
+            this.addKey = false;
+        }else {
+            window.removeEventListener("keydown", this.handleKeyDown);
+            window.removeEventListener("keyup", this.handleKeyUp);
+        }
+        if ( this.props.features !== nextProps.features && nextProps.drawFeatures) {
+            this.props.changeLayerProperties("featureselector", {features: nextProps.features});
+        }
         if (nextProps.drawStatus === "stop" && nextProps.drawStatus !== this.props.drawStatus) {
             this.props.changeDrawingStatus("clean", nextProps.drawMethod, '', []);
         }
@@ -68,6 +97,7 @@ const FeatureSelector = React.createClass({
             // Check SRS & Type
             let sFieldSRS = spatialField.geometry && spatialField.geometry.projection || "EPSG:4326";
             let sFieldType = spatialField.geometry.type || "Polygon";
+
             let prevGeometry = {
                     coordinates: [spatialField.geometry.coordinates],
                     projection: sFieldSRS,
@@ -83,7 +113,7 @@ const FeatureSelector = React.createClass({
                     geometry: intersection
                 };
                 let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter});
-                this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.ctrlKey);
+                this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.addKey);
 
             }else {
                 this.props.featureSelectorError("Select some features");
@@ -126,7 +156,7 @@ const FeatureSelector = React.createClass({
         render() {
             let isActiveDraw = (this.props.drawStatus === "start") ? true : false;
             return this.props.open ? (
-                <div id="crashs-selection-bar" onKeyDown={this.keyDown}>
+                <div id="feature-selection-bar" onKeyDown={this.keyDown}>
                    <div className="form-group">
                         <div className="input-group">
                             <span onClick={this.toggleDrawSupport} className={isActiveDraw ? "input-group-addon input-group-addon-disabled" : "input-group-addon"}>
@@ -153,10 +183,12 @@ const FeatureSelector = React.createClass({
             this.props.changeDrawingStatus('start', method, "queryform", []);
         },
         handleKeyDown(e) {
-            this.ctrlKey = e.ctrlKey;
+            this.addKey = e[this.key];
+            event.preventDefault();
+            event.stopPropagation();
         },
         handleKeyUp() {
-            window.setTimeout(() => {this.ctrlKey = false; }, 100);
+            window.setTimeout(() => {this.addKey = false; }, 100);
         }
 });
 const selector = createSelector([
@@ -176,7 +208,9 @@ const selector = createSelector([
 const FeatureSelectorPlugin = connect(selector, {
         changeDrawingStatus: changeDrawingStatus,
         loadFeatures: loadFeatures,
-        featureSelectorError: featureSelectorError
+        featureSelectorError: featureSelectorError,
+        addLayer,
+        changeLayerProperties
 })(FeatureSelector);
 
 module.exports = {

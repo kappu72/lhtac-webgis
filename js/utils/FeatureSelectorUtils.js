@@ -12,10 +12,10 @@ const FeatureSelectorUtils = {
     intersectPolygons(polyOne, polyTwo) {
         let {coordinates} = polyTwo;
         if (polyOne.projection !== polyTwo.projection) {
-            coordinates = coordinates[0].map((point) => {
+            coordinates = [coordinates[0].map((point) => {
                 let p = CoordinatesUtils.reproject(point, polyTwo.projection, polyOne.projection);
                 return [p.x, p.y];
-            });
+            })];
         }
         let intersection = intersect({
                 type: "Feature",
