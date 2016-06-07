@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 const CoordinatesUtils = require('../../MapStore2/web/client/utils/CoordinatesUtils');
-const intersect = require('turf-intersect');
+const {intersect} = require('turf');
 
 const FeatureSelectorUtils = {
     intersectPolygons(polyOne, polyTwo) {

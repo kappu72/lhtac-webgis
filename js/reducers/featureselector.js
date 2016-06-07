@@ -12,7 +12,8 @@ const {
 const {
     FEATURES_LOADED,
     NEW_GETFEATURE_REQUEST,
-    FEATURE_SELECTOR_ERROR
+    FEATURE_SELECTOR_ERROR,
+    FEATURE_SELECTOR_REST
 } = require('../actions/featureselector');
 const assign = require('object-assign');
 
@@ -49,6 +50,9 @@ function featureselector(state = initialState, action) {
             return {...state, error: action.error, geometryStatus: "consumed", geometry: undefined, request: {}};
         }
         case 'ZONES_RESET': {
+            return initialState;
+        }
+        case FEATURE_SELECTOR_REST: {
             return initialState;
         }
         default:

@@ -13,13 +13,15 @@ const {Glyphicon, Alert} = require('react-bootstrap');
 const FeatureSelectorUtils = require('../utils/FeatureSelectorUtils');
 const FilterUtils = require('../../MapStore2/web/client/utils/FilterUtils');
 
-const ComboField = require('../../MapStore2/web/client/components/data/query/ComboField');
+const Spinner = require('react-spinkit');
 const {createSelector} = require('reselect');
-const LocaleUtils = require('../../MapStore2/web/client/utils/LocaleUtils');
 
 const {
     changeDrawingStatus
 } = require('../../MapStore2/web/client/actions/draw');
+const {
+    highlightStatus
+} = require('../../MapStore2/web/client/actions/highlight');
 const {
     loadFeatures,
     featureSelectorError} = require('../actions/featureselector');
@@ -31,6 +33,8 @@ const {
 
 const FeatureSelector = React.createClass({
     propTypes: {
+        bboxGlyph: React.PropTypes.string,
+        polyGlyph: React.PropTypes.string,
         drawFeatures: React.PropTypes.bool,
         activeLayer: React.PropTypes.object,
         request: React.PropTypes.object,
@@ -46,6 +50,7 @@ const FeatureSelector = React.createClass({
         featureSelectorError: React.PropTypes.func,
         addLayer: React.PropTypes.func,
         changeLayerProperties: React.PropTypes.func,
+        changeHighlightStatus: React.PropTypes.func,
         error: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool])
     },
     contextTypes: {
@@ -53,6 +58,8 @@ const FeatureSelector = React.createClass({
     },
     getDefaultProps() {
         return {
+            bboxGlyph: "unchecked",
+            polyGlyph: "edit",
             drawFeatures: true,
             drawMethod: "Polygon",
             spatialMethodOptions: [
@@ -62,7 +69,8 @@ const FeatureSelector = React.createClass({
             changeDrawingStatus: () => {},
             loadFeatures: () => {},
             addLayer: () => {},
-            changeLayerProperties: () => {}
+            changeLayerProperties: () => {},
+            changeHighlightStatus: () => {}
         };
     },
     componentDidMount() {
@@ -72,24 +80,18 @@ const FeatureSelector = React.createClass({
         window.addEventListener("keyup", this.handleKeyUp);
 
     },
-        componentWillUnmount() {
+    componentWillUnmount() {
         window.removeEventListener("keydown", this.handleKeyDown);
         window.removeEventListener("keyup", this.handleKeyUp);
     },
     componentWillReceiveProps(nextProps) {
-        if (nextProps.drawStatus === "start" && nextProps.open) {
-            window.addEventListener("keydown", this.handleKeyDown);
-            window.addEventListener("keyup", this.handleKeyUp);
-            this.addKey = false;
-        }else {
-            window.removeEventListener("keydown", this.handleKeyDown);
-            window.removeEventListener("keyup", this.handleKeyUp);
-        }
-        if ( this.props.features !== nextProps.features && nextProps.drawFeatures) {
+
+        if (this.props.features !== nextProps.features && nextProps.drawFeatures) {
             this.props.changeLayerProperties("featureselector", {features: nextProps.features});
+            this.props.changeHighlightStatus('enabled');
         }
-        if (nextProps.drawStatus === "stop" && nextProps.drawStatus !== this.props.drawStatus) {
-            this.props.changeDrawingStatus("clean", nextProps.drawMethod, '', []);
+        if (nextProps.drawStatus === "start" && nextProps.drawStatus !== this.props.drawStatus) {
+            this.props.changeHighlightStatus('disabled');
         }
         if (nextProps.geometry && nextProps.geometryStatus === "created" && nextProps.queryform.spatialField && nextProps.queryform.spatialField.geometry) {
 
@@ -99,7 +101,7 @@ const FeatureSelector = React.createClass({
             let sFieldType = spatialField.geometry.type || "Polygon";
 
             let prevGeometry = {
-                    coordinates: [spatialField.geometry.coordinates],
+                    coordinates: spatialField.geometry.coordinates,
                     projection: sFieldSRS,
                     type: sFieldType
                 };
@@ -114,82 +116,69 @@ const FeatureSelector = React.createClass({
                 };
                 let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter});
                 this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.addKey);
-
+                this.addKey = false;
             }else {
+                this.addKey = false;
                 this.props.featureSelectorError("Select some features");
             }
-
+            this.props.changeDrawingStatus("clean", '', 'featureselector', []);
         }
 
     },
+    renderError() {
+        return this.props.error ? (
 
-        renderMethodSelector(isActiveDraw) {
-            const selectedMethod = this.props.spatialMethodOptions.filter((opt) => this.props.drawMethod === opt.id)[0];
-
-            const methodCombo = (
-                <ComboField
-                disabled={!isActiveDraw}
-                busy={(this.props.request && this.props.request.state === 'loading') ? true : false}
-                fieldOptions={
-                    this.props.spatialMethodOptions.map((opt) => {
-                        return LocaleUtils.getMessageById(this.context.messages, opt.name);
-                    })
-                }
-                fieldName="method"
-                style={{width: "140px", marginBottom: "0px"}}
-                fieldRowId={new Date().getUTCMilliseconds()}
-                fieldValue={
-                    LocaleUtils.getMessageById(this.context.messages, selectedMethod ? selectedMethod.name : "")
-                }
-                onUpdateField={this.updateSpatialMethod}/>
-            );
-            return methodCombo;
-        },
-        renderError() {
-            return this.props.error ? (
-                <Alert bsStyle="warning"
-                        onDismiss={() => {this.props.featureSelectorError(false); }}>
-                {this.props.error}
-                </Alert>
-                ) : null;
-        },
-        render() {
-            let isActiveDraw = (this.props.drawStatus === "start") ? true : false;
-            return this.props.open ? (
-                <div id="feature-selection-bar" onKeyDown={this.keyDown}>
-                   <div className="form-group">
-                        <div className="input-group">
-                            <span onClick={this.toggleDrawSupport} className={isActiveDraw ? "input-group-addon input-group-addon-disabled" : "input-group-addon"}>
-                                        <Glyphicon glyph="move"/>
-                            </span>
-                        {this.renderMethodSelector(isActiveDraw)}
-                        </div>
+            <Alert calssName="selector-error" bsStyle="warning"
+                    onDismiss={() => {this.props.featureSelectorError(false); }}>
+            {this.props.error}
+            </Alert>
+            ) : null;
+    },
+    render() {
+        return this.props.open ? (
+            <div id="feature-selection-bar" onKeyDown={this.keyDown}>
+                    {(this.props.request.state === 'loading') ? (
+                       <div className="selector-spinner">
+                            <Spinner spinnerName="wordpress" noFadeIn/>
+                        </div>) : (
+                 <div className="button-container">
+                    <div style={{"float": "left"}} className={this.getButtonClass("BBOX")}
+                    onClick={this.updateSpatialMethod.bind(null, 'BBOX')}>
+                            <Glyphicon glyph={this.props.bboxGlyph}/>
                     </div>
-                    {this.renderError()}
+                    <div style={{"float": "right"}} className={this.getButtonClass("Polygon")}
+                            onClick={this.updateSpatialMethod.bind(null, 'Polygon')}>
+                            <Glyphicon glyph={this.props.polyGlyph}/>
+                    </div>
                 </div>
-                ) : null;
-        },
-        toggleDrawSupport() {
-            let isActiveDraw = (this.props.drawStatus === "start") ? true : false;
-            let newStatus = isActiveDraw ? "stop" : "start";
-            this.props.changeDrawingStatus(newStatus, this.props.drawMethod, '', []);
-        },
-        updateSpatialMethod(id, name, value) {
-            const method = this.props.spatialMethodOptions.filter((opt) => {
-                if (value === LocaleUtils.getMessageById(this.context.messages, opt.name)) {
-                    return opt;
+                )
                 }
-            })[0].id;
-            this.props.changeDrawingStatus('start', method, "queryform", []);
-        },
-        handleKeyDown(e) {
-            this.addKey = e[this.key];
-            event.preventDefault();
-            event.stopPropagation();
-        },
-        handleKeyUp() {
-            window.setTimeout(() => {this.addKey = false; }, 100);
+                {this.renderError()}
+            </div>
+            ) : null;
+    },
+    getButtonClass(type) {
+        return (type === this.props.drawMethod && this.props.drawStatus === "start" ) ? "pressed" : "";
+    },
+    toggleDrawSupport() {
+        let isActiveDraw = (this.props.drawStatus === "start") ? true : false;
+        let newStatus = isActiveDraw ? "stop" : "start";
+        this.props.changeDrawingStatus(newStatus, this.props.drawMethod, 'featureselector', []);
+    },
+    updateSpatialMethod(value) {
+        if (this.props.drawMethod === value) {
+            this.props.changeDrawingStatus('stop', '', "featureselector", []);
+        }else {
+            this.props.changeDrawingStatus('start', value, "featureselector", []);
         }
+
+    },
+    handleKeyDown(e) {
+        this.addKey = e[this.key];
+    },
+    handleKeyUp() {
+        window.setTimeout(() => {this.addKey = false; }, 100);
+    }
 });
 const selector = createSelector([
     (state) => (state.lhtac && state.lhtac.activeLayer || {}),
@@ -210,13 +199,15 @@ const FeatureSelectorPlugin = connect(selector, {
         loadFeatures: loadFeatures,
         featureSelectorError: featureSelectorError,
         addLayer,
-        changeLayerProperties
+        changeLayerProperties,
+        changeHighlightStatus: highlightStatus
 })(FeatureSelector);
 
 module.exports = {
     FeatureSelectorPlugin: FeatureSelectorPlugin,
     reducers: {
         featureselector: require("../reducers/featureselector"),
-        draw: require('../../MapStore2/web/client/reducers/draw')
+        draw: require('../../MapStore2/web/client/reducers/draw'),
+        highlight: require('../../MapStore2/web/client/reducers/highlight')
     }
 };

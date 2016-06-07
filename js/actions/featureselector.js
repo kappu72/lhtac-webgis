@@ -10,9 +10,15 @@ const LOAD_FEATURES = 'LOAD_FEATURES';
 const FEATURES_LOADED = 'FEATURES_LOADED';
 const NEW_GETFEATURE_REQUEST = 'NEW_GETFEATURE_REQUEST';
 const FEATURE_SELECTOR_ERROR = 'FEATURE_SELECTOR_ERROR';
+const FEATURE_SELECTOR_REST = 'FEATURE_SELECTOR_REST';
 const uuid = require('node-uuid');
 const axios = require('../../MapStore2/web/client/libs/ajax');
 
+function featureSelectorReset() {
+    return {
+        type: FEATURE_SELECTOR_REST
+    };
+}
 function newGetFeatureRequest(reqId, filter) {
     return {
         type: NEW_GETFEATURE_REQUEST,
@@ -66,7 +72,9 @@ module.exports = {
     FEATURES_LOADED,
     NEW_GETFEATURE_REQUEST,
     FEATURE_SELECTOR_ERROR,
+    FEATURE_SELECTOR_REST,
     loadFeatures,
     featuresLoaded,
-    featureSelectorError
+    featureSelectorError,
+    featureSelectorReset
 };

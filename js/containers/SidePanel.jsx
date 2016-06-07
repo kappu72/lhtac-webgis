@@ -11,11 +11,19 @@ const {connect} = require('react-redux');
 const {Glyphicon, Panel} = require('react-bootstrap');
 
 const AccordionPanel = require("./AccordionPanel");
+const {
+    highlightStatus
+} = require('../../MapStore2/web/client/actions/highlight');
+const {featureSelectorReset} = require("../actions/featureselector");
 
 const Statistics = connect((state) => ({
     activeLayer: state.lhtac.activeLayer,
-    selectedfeatures: state.featureselector.features.length
-}), {})(require("../components/Statistics"));
+    selectedfeatures: state.featureselector.features.length,
+    highlightedfeatures: state.highlight.highlighted
+}), {
+    highlightStatus,
+    featureSelectorReset
+})(require("../components/Statistics"));
 
 const SidePanel = React.createClass({
     propTypes: {

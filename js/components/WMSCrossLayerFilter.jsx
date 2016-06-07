@@ -137,6 +137,7 @@ const WMSCrossLayerFilter = React.createClass({
     reset() {
         this.props.actions.onReset();
         this.props.actions.changeDrawingStatus('clean', 'BBOX', 'wmscrossfilter', []);
+        this.props.actions.changeHighlightStatus('disabled');
         let params = assign(this.props.params, {cql_filter: "INCLUDE"});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
     }
