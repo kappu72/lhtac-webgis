@@ -55,11 +55,13 @@ function loadFeatures(url, filter, add) {
             if (typeof config !== "object") {
                 try {
                     config = JSON.parse(config);
+                    dispatch(featuresLoaded(config.features, reqId, add));
                 } catch(e) {
                     dispatch(featureSelectorError('Search result broken (' + url + ":   " + filter + '): ' + e.message));
                 }
+            }else {
+                dispatch(featuresLoaded(config.features, reqId, add));
             }
-            dispatch(featuresLoaded(config.features, reqId, add));
         }).catch((e) => {
             dispatch(featureSelectorError("Error during wfs request " + e.statusText));
         });

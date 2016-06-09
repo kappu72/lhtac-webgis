@@ -96,7 +96,7 @@ module.exports = (plugins) => {
                     searchMethod: "ilike",
                     searchAttribute: "DistNum",
                     label: "ITD District",
-                    multivalue: true,
+                    multivalue: false,
                     sort: {
                         sortBy: "ITD_Dist_n",
                         sortOrder: "ASC"

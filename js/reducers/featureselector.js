@@ -19,7 +19,7 @@ const assign = require('object-assign');
 
 const initialState = {geometry: null, features: [], request: {}};
 
-function featureLoaded(add, newFeatures, previousFeatures) {
+function featureLoaded(add, newFeatures = [], previousFeatures) {
     return (add) ?
            [...previousFeatures, ...newFeatures.reduce((ar, f) => {
                if (previousFeatures.findIndex((pf) => {

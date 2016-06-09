@@ -12,11 +12,14 @@ const FeatureSelectorUtils = {
     intersectPolygons(polyOne, polyTwo) {
         let {coordinates} = polyTwo;
         if (polyOne.projection !== polyTwo.projection) {
-            coordinates = [coordinates[0].map((point) => {
-                let p = CoordinatesUtils.reproject(point, polyTwo.projection, polyOne.projection);
-                return [p.x, p.y];
-            })];
+            coordinates = coordinates.map((poly) => {
+                return poly.map((point) => {
+                    let p = CoordinatesUtils.reproject(point, polyTwo.projection, polyOne.projection);
+                    return [p.x, p.y];
+                });
+            });
         }
+        // TODO:: Turf expects geometry with coordinates in EPSG:4326
         let intersection = intersect({
                 type: "Feature",
                 geometry: polyOne},

@@ -158,7 +158,6 @@
     top: 50px;
     left: 45px;
     z-index: 100;
-    width:300px;
 }
 #feature-selection-bar .rw-dropdownlist{
     border-top-left-radius: 0px;
@@ -206,8 +205,8 @@
     background-color: #eeeeee;
 }
 .button-container{
-    width: 80px;
-    height: 60px;
+    height: 40px;
+    width: 81px;
 }
 .selector-spinner{
     padding: 8px 3px 3px 8px;

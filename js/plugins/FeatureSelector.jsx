@@ -114,7 +114,7 @@ const FeatureSelector = React.createClass({
                     operation: spatialField.operation,
                     geometry: intersection
                 };
-                let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter});
+                let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter}, "1.1.0");
                 this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.addKey);
                 this.addKey = false;
             }else {
