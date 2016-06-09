@@ -34,6 +34,10 @@ const {
     highlightStatus
 } = require('../../MapStore2/web/client/actions/highlight');
 
+const {
+    featureSelectorReset
+} = require('../actions/featureselector');
+
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,
     spatialField: state.queryform.spatialField,
@@ -68,7 +72,8 @@ const WMSCrossLayerFilter = connect((state) => ({
             changeDrawingStatus: changeDrawingStatus,
             onQuery: changeLayerProperties,
             onReset: resetZones,
-            changeMapView
+            changeMapView,
+            featureSelectorReset
         }, dispatch)
     };
 })(require('../components/WMSCrossLayerFilter'));

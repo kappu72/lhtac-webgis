@@ -76,7 +76,7 @@ const WMSCrossLayerFilter = React.createClass({
     },
     search() {
         let zone;
-
+        this.props.actions.featureSelectorReset();
         // Get the latest zone with value in the array
         for (let i = this.props.spatialField.zoneFields.length - 1; i >= 0; i--) {
             if (this.props.spatialField.zoneFields[i].value) {
