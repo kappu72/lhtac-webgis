@@ -104,12 +104,10 @@ const WMSCrossLayerFilter = React.createClass({
                     filter += ",";
                 }
             });
-            filter += ")'";
+            filter += ")')))";
         } else {
             filter += " = ''" + zone.value + "''')))";
         }
-
-        filter += ")))";
 
         let params = assign({}, this.props.params, {cql_filter: filter});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
