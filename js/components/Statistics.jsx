@@ -57,7 +57,7 @@ const Statistics = React.createClass({
                         }
                     </ListGroup>
                 </Panel>
-                <Panel style={{marginTop: "15px"}} header={this.props.activeLayer.title} collapsible>
+                <Panel style={{marginTop: "15px"}} header={this.props.activeLayer.title} >
                     <Legend
                         layer={this.props.activeLayer}
                         legendHeigth={this.props.activeLayer.legend.height || 20}

@@ -30,25 +30,29 @@ const SidePanel = React.createClass({
         expanded: React.PropTypes.bool,
         pinned: React.PropTypes.bool,
         onToggle: React.PropTypes.func,
-        onPin: React.PropTypes.func
+        onPin: React.PropTypes.func,
+        height: React.PropTypes.string
     },
     getDefaultProps() {
         return {
             expanded: true,
             pinned: false,
             onToggle: () => {},
-            onPin: () => {}
+            onPin: () => {},
+            height: "80%"
         };
     },
     render() {
         let panelStyle = {
             transform: this.props.expanded ? "translate3d(0, 0, 0)" : "translate3d(-100%, 0, 0)",
             transition: "all 0.5s",
-            bottom: "0"
+            bottom: "0",
+            height: this.props.height
         };
 
         let pinStyle = {
-            transform: "rotate(" + (this.props.pinned ? "-45" : "0") + "deg)"
+            transform: "rotate(" + (this.props.pinned ? "-45" : "0") + "deg)",
+            height: this.props.height
         };
 
         return (
@@ -64,7 +68,7 @@ const SidePanel = React.createClass({
                         <span className="pin" style={pinStyle} onClick={this.pin}><Glyphicon glyph="pushpin"/></span>
                     </div>
                     <div className="body">
-                        <div style={{overflowY: "hidden", height: "100%"}}>
+                        <div style={{height: "100%"}}>
                             <AccordionPanel/>
                             <Panel className="lhtac-panel statistics-panel statistics-container" header={<h4>Statistics</h4>}>
                                 <Statistics/>

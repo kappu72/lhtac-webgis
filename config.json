@@ -99,6 +99,58 @@
                 "name": "Shown on map:",
                 "value": 0
             }
+        ],
+        "columnDefs": [
+            {
+                "field": "properties.severity",
+                "headerName": "Severity",
+                "width": 180
+            },
+            {
+                "field": "properties.accident_year",
+                "headerName": "Year",
+                "width": 100
+            },
+            {
+                "field": "properties.accident_date",
+                "headerName": "Date",
+                "width": 100
+            },
+            {
+                "field": "properties.accident_time",
+                "headerName": "Time",
+                "width": 100
+            },
+            {
+                "field": "properties.day_of_week",
+                "headerName": "Day",
+                "width": 100
+            },
+            {
+                "field": "properties.street1",
+                "headerName": "Street 1",
+                "width": 180
+            },
+            {
+                "field": "properties.street2",
+                "headerName": "Street 2",
+                "width": 180
+            },
+            {
+                "field": "properties.agency_submitting_report",
+                "headerName": "Agency",
+                "width": 180
+            },
+            {
+                "field": "properties.alcohol_drug_involve",
+                "headerName": "Drunk",
+                "width": 180
+            },
+            {
+                "field": "properties.events",
+                "headerName": "Events",
+                "width": 180
+            }
         ]
 			},
       {

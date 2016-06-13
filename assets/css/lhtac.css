@@ -217,3 +217,23 @@
     border-radius: 10px;
     float: left;
 }
+#south-panel {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    z-index: 2000;
+
+}
+#south-panel .header{
+    top: 0;
+    height: 5px;
+    width: 100%;
+    border: solid 1px #DDD;
+    color: white;
+    cursor: ns-resize;
+    background-color: rgb(240, 240, 240);
+    margin-top: 0px;
+    color: black;
+}

@@ -8,7 +8,8 @@
 
 const {
     PIN_SIDEPANEL,
-    TOGGLE_SIDEPANEL
+    TOGGLE_SIDEPANEL,
+    RESIZE_HEIGHT
 } = require('../actions/sidepanel');
 
 const assign = require('object-assign');
@@ -23,7 +24,7 @@ const initialState = {
             top: 0,
             left: "350px",
             right: 0,
-            height: "100%"
+            height: "80%"
         }
     }
 };
@@ -48,6 +49,11 @@ function sidepanel(state = initialState, action) {
                         assign({}, state.layoutUpdates.style, {left: 0})
                 })
             });
+        }
+        case RESIZE_HEIGHT: {
+            let newStyle = {...state.layoutUpdates.style, height: action.height};
+            let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
+            return {...state, layoutUpdates: newLayout};
         }
         default:
             return state;

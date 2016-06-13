@@ -7,6 +7,7 @@
  */
 const PIN_SIDEPANEL = 'PIN_SIDEPANEL';
 const TOGGLE_SIDEPANEL = 'TOGGLE_SIDEPANEL';
+const RESIZE_HEIGHT = 'RESIZE_HEIGHT';
 
 function toggleSidePanel(toggle) {
     return {
@@ -22,9 +23,18 @@ function pinSidePanel(pin) {
     };
 }
 
+function resizeHeight(height) {
+    return {
+        type: RESIZE_HEIGHT,
+        height
+    };
+}
+
 module.exports = {
     PIN_SIDEPANEL,
     TOGGLE_SIDEPANEL,
+    RESIZE_HEIGHT,
     toggleSidePanel,
-    pinSidePanel
+    pinSidePanel,
+    resizeHeight
 };

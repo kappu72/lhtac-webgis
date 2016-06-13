@@ -16,14 +16,23 @@ const PluginsUtils = require('../../MapStore2/web/client/utils/PluginsUtils');
 
 const {resetControls} = require('../../MapStore2/web/client/actions/controls');
 
-const {toggleSidePanel, pinSidePanel} = require("../actions/sidepanel");
+const {toggleSidePanel, pinSidePanel, resizeHeight} = require("../actions/sidepanel");
+
 const SidePanel = connect((state) => ({
     expanded: state.sidepanel.expanded,
-    pinned: state.sidepanel.pinned
+    pinned: state.sidepanel.pinned,
+    height: ( state.featureselector && state.featureselector.features && state.featureselector.features.length > 0 ) ? state.sidepanel.layoutUpdates.style.height : "100%"
 }), {
     onToggle: toggleSidePanel,
     onPin: pinSidePanel
 })(require("../containers/SidePanel"));
+
+const SouthPanel = connect((state) => ({
+    initHeight: (state.featureselector.features.length > 0 ) ? 100 - parseFloat(state.sidepanel.layoutUpdates.style.height) : 0,
+    height: (state.featureselector.features.length > 0 ) ? 100 - parseFloat(state.sidepanel.layoutUpdates.style.height) : 0
+}), {
+    resizeHeight
+})(require("../containers/SouthPanel"));
 
 const MapViewer = React.createClass({
     propTypes: {
@@ -35,7 +44,8 @@ const MapViewer = React.createClass({
         mapType: React.PropTypes.string,
         style: React.PropTypes.object,
         layoutUpdates: React.PropTypes.object,
-        toggleControl: React.PropTypes.func
+        toggleControl: React.PropTypes.func,
+        height: React.PropTypes.string
     },
     getDefaultProps() {
         return {
@@ -47,14 +57,18 @@ const MapViewer = React.createClass({
                 position: "absolute",
                 top: 0,
                 left: "350px",
-                right: 0,
-                height: "100%"
-            }
+                right: 0
+            },
+            height: "80%"
         };
     },
     getPluginDescriptor(plugin) {
         return PluginsUtils.getPluginDescriptor(this.props.plugins,
                 this.props.pluginsConfig[this.props.mode], plugin);
+    },
+    getStyle(style) {
+        let newStyle = {...style, height: this.props.height};
+        return newStyle;
     },
     renderPlugins(plugins) {
         return plugins
@@ -75,10 +89,11 @@ const MapViewer = React.createClass({
             return (
                 <div>
                     <SidePanel/>
-                    <div key="viewer" style={this.props.layoutUpdates.style || this.props.style}>
+                    <div key="viewer" style={this.getStyle(this.props.layoutUpdates.style || this.props.style)}>
                         {this.renderPlugins(this.props.pluginsConfig[this.props.mode])}
                     </div>
                     <div id="left-edge" onMouseEnter={() => { this.tooglePanel(false); }} onMouseLeave={() => { if (this.timeOut) { clearTimeout(this.timeOut); } }}/>
+                    <SouthPanel />
                 </div>
             );
         }
@@ -92,7 +107,8 @@ const MapViewer = React.createClass({
 
 module.exports = connect((state) => ({
     pluginsConfig: state.plugins || ConfigUtils.getConfigProp('plugins') || null,
-    layoutUpdates: state.sidepanel.layoutUpdates || 0
+    layoutUpdates: state.sidepanel.layoutUpdates || 0,
+    height: ( state.featureselector && state.featureselector.features && state.featureselector.features.length > 0 ) ? state.sidepanel.layoutUpdates.style.height : "100%"
 }),
 {
     toggleControl: toggleSidePanel,

@@ -74,7 +74,6 @@ const FeatureSelector = React.createClass({
         };
     },
     componentDidMount() {
-        this.key = (navigator && navigator.platform && navigator.platform === 'MacIntel') ? 'altKey' : 'ctrlKey';
         this.addKey = false;
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
@@ -89,9 +88,6 @@ const FeatureSelector = React.createClass({
         if (this.props.features !== nextProps.features && nextProps.drawFeatures) {
             this.props.changeLayerProperties("featureselector", {features: nextProps.features});
             this.props.changeHighlightStatus('enabled');
-        }
-        if (nextProps.drawStatus === "start" && nextProps.drawStatus !== this.props.drawStatus) {
-            this.props.changeHighlightStatus('disabled');
         }
         if (nextProps.geometry && nextProps.geometryStatus === "created" && nextProps.queryform.spatialField && nextProps.queryform.spatialField.geometry) {
 
@@ -174,7 +170,7 @@ const FeatureSelector = React.createClass({
 
     },
     handleKeyDown(e) {
-        this.addKey = e[this.key];
+        this.addKey = e.ctrlKey || e.metaKey;
     },
     handleKeyUp() {
         window.setTimeout(() => {this.addKey = false; }, 100);
