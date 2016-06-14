@@ -59,6 +59,8 @@ function loadFeatures(url, filter, add) {
                     dispatch(featuresLoaded(config.features, reqId, add));
                     if (config.features && config.features.length > 0) {
                         dispatch(resizeHeight("80%"));
+                    }else {
+                        dispatch(resizeHeight("100%"));
                     }
                 } catch(e) {
                     dispatch(featureSelectorError('Search result broken (' + url + ":   " + filter + '): ' + e.message));
@@ -67,6 +69,8 @@ function loadFeatures(url, filter, add) {
                 dispatch(featuresLoaded(config.features, reqId, add));
                 if (config.features && config.features.length > 0) {
                     dispatch(resizeHeight("80%"));
+                }else {
+                    dispatch(resizeHeight("100%"));
                 }
             }
         }).catch((e) => {
