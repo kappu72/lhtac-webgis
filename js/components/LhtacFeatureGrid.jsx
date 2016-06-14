@@ -9,6 +9,7 @@
 
 const React = require('react');
 const {connect} = require('react-redux');
+const {isEqual} = require('lodash');
 const FeatureGrid = require('../../MapStore2/web/client/components/data/featuregrid/FeatureGrid');
 const {
     updateHighlighted } = require('../../MapStore2/web/client/actions/highlight');
@@ -37,7 +38,7 @@ const LhtacFeatureGrid = React.createClass({
     shouldComponentUpdate(nextProps) {
         return nextProps.update &&
             ((!this.highlighted || this.highlighted.toString() !== nextProps.highlightedFeatures.toString()) ||
-            nextProps.style !== this.props.style);
+            nextProps.style !== this.props.style || (!isEqual(nextProps.features, this.props.features)));
     },
     render() {
         return (this.props.features.length > 0) ? (
