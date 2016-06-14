@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 const React = require('react');
-// const assign = require('object-assign');
 
-const {Panel, ListGroup, ListGroupItem, Button} = require('react-bootstrap');
+const {Panel, PanelGroup, ListGroup, ListGroupItem, Button} = require('react-bootstrap');
 
 // const ConfigUtils = require('../../MapStore2/web/client/utils/ConfigUtils');
 
@@ -20,7 +19,8 @@ const Statistics = React.createClass({
         selectedfeatures: React.PropTypes.number,
         highlightedfeatures: React.PropTypes.number,
         highlightStatus: React.PropTypes.func,
-        featureSelectorReset: React.PropTypes.func
+        featureSelectorReset: React.PropTypes.func,
+        height: React.PropTypes.number
     },
     getDefaultProps() {
         return {
@@ -39,10 +39,17 @@ const Statistics = React.createClass({
             featureSelectorReset: () => {}
         };
     },
+    getInitialState() {
+        return { activeKey: '2'};
+    },
     render() {
         return (
             <div>
-                <Panel header="Download and statistics" collapsible>
+            <div style={{minHeight: this.props.height - 128}}>
+               <PanelGroup activeKey={this.state.activeKey}
+                    onSelect={(activeKey) => {this.setState({activeKey}); }} accordion>
+                <Panel eventKey="1"
+                header="Download and statistics" collapsible>
                     <ListGroup className="lhtac-group-list">
                         <ListGroupItem key={1}>Selected: {this.props.selectedfeatures}</ListGroupItem>
                         <ListGroupItem key={2}>Highlighted: {this.props.highlightedfeatures}</ListGroupItem>
@@ -57,16 +64,22 @@ const Statistics = React.createClass({
                         }
                     </ListGroup>
                 </Panel>
-                <Panel style={{marginTop: "15px"}} header={this.props.activeLayer.title} >
+                <Panel eventKey="2"
+                    style={{marginTop: "15px"}}
+                    header={this.props.activeLayer.title} collapsible>
                     <Legend
                         layer={this.props.activeLayer}
                         legendHeigth={this.props.activeLayer.legend.height || 20}
                         legendWidth={this.props.activeLayer.legend.width || 20}
                         legendOptions={this.props.activeLayer.legend.options}/>
                 </Panel>
-                <Button style={{marginTop: "15px", "float": "right"}} onClick={this.resetStatistics}>
-                    Clear Selections
-                </Button>
+                </PanelGroup>
+                </div>
+
+                <Button style={{marginTop: "5px", "float": "right"}} onClick={this.resetStatistics}>
+                       Clear Selections
+                 </Button>
+
             </div>
         );
     },

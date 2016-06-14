@@ -24,7 +24,7 @@ const initialState = {
             top: 0,
             left: "350px",
             right: 0,
-            height: "80%"
+            height: "100%"
         }
     }
 };
@@ -52,6 +52,16 @@ function sidepanel(state = initialState, action) {
         }
         case RESIZE_HEIGHT: {
             let newStyle = {...state.layoutUpdates.style, height: action.height};
+            let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
+            return {...state, layoutUpdates: newLayout};
+        }
+        case 'ZONES_RESET': {
+            let newStyle = {...state.layoutUpdates.style, height: "100%"};
+            let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
+            return {...state, layoutUpdates: newLayout};
+        }
+        case 'FEATURE_SELECTOR_REST': {
+            let newStyle = {...state.layoutUpdates.style, height: "100%"};
             let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
             return {...state, layoutUpdates: newLayout};
         }

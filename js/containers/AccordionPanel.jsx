@@ -74,7 +74,9 @@ const WMSCrossLayerFilter = connect((state) => ({
 })(require('../components/WMSCrossLayerFilter'));
 
 const AccordionPanel = React.createClass({
-    propTypes: {},
+    propTypes: {
+        height: React.PropTypes.number
+    },
     getDefaultProps() {
         return {};
     },
@@ -91,14 +93,14 @@ const AccordionPanel = React.createClass({
                 onSelect={this.handleSelect}
                 accordion>
                 <Panel className="lhtac-panel" header="Select and customize an area filter" eventKey="1">
-                    <div style={{height: "300px"}}>
+                    <div style={{minHeight: this.props.height - 113}}>
                         <SpatialFilter/>
                         <WMSCrossLayerFilter
                             filterType={"OGC"}/>
                     </div>
                 </Panel>
                 <Panel className="lhtac-panel" header="Advanced Filter" eventKey="2">
-                    <div style={{height: "300px"}}>
+                    <div style={{minHeight: this.props.height - 113}}>
                         <span/>
                     </div>
                 </Panel>

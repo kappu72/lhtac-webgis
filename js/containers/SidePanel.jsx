@@ -7,7 +7,7 @@
  */
 const React = require('react');
 const {connect} = require('react-redux');
-
+const {getWindowSize} = require('../../MapStore2/web/client/utils/AgentUtils');
 const {Glyphicon, Panel} = require('react-bootstrap');
 
 const AccordionPanel = require("./AccordionPanel");
@@ -39,7 +39,7 @@ const SidePanel = React.createClass({
             pinned: false,
             onToggle: () => {},
             onPin: () => {},
-            height: "80%"
+            height: "100%"
         };
     },
     render() {
@@ -54,7 +54,10 @@ const SidePanel = React.createClass({
             transform: "rotate(" + (this.props.pinned ? "-45" : "0") + "deg)",
             height: this.props.height
         };
-
+        let winH = getWindowSize().maxHeight;
+        let hinPx = parseFloat(this.props.height) / 100 * winH;
+        let accHeight = (hinPx - 42) * 0.5;
+        let statHeight = (hinPx - 42) * 0.5;
         return (
             <div onMouseLeave={() => {
                 let t = !this.props.pinned && this.props.expanded;
@@ -67,11 +70,13 @@ const SidePanel = React.createClass({
                         <span className="close" onClick={this.toggle}>×</span>
                         <span className="pin" style={pinStyle} onClick={this.pin}><Glyphicon glyph="pushpin"/></span>
                     </div>
-                    <div className="body">
-                        <div style={{height: "100%"}}>
-                            <AccordionPanel/>
-                            <Panel className="lhtac-panel statistics-panel statistics-container" header={<h4>Statistics</h4>}>
-                                <Statistics/>
+                    <div className="body" style={{overflowY: "hidden"}} >
+                        <div style={{height: accHeight, overflowY: "auto"}}>
+                            <AccordionPanel height={accHeight}/>
+                        </div>
+                        <div style={{height: statHeight, overflowY: "auto"}}>
+                            <Panel style={{marginBottom: 0}} className="lhtac-panel statistics-panel statistics-container" header={<h4>Statistics</h4>}>
+                                <Statistics height={statHeight}/>
                             </Panel>
                         </div>
                     </div>

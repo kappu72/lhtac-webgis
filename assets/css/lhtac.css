@@ -133,7 +133,6 @@
 
 .statistics-container .panel-body{
     overflow-y: auto;
-    max-height: 300px;
 }
 
 .rw-multiselect-taglist > li {
