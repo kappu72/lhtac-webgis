@@ -117,6 +117,9 @@ const FeatureSelector = React.createClass({
                 };
                 let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter}, "1.1.0");
                 this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.addKey);
+                if (!this.addKey) {
+                    this.props.changeHighlightStatus('disabled');
+                }
                 this.addKey = false;
             }else {
                 this.addKey = false;
