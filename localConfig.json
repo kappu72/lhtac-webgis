@@ -29,7 +29,8 @@
 				"hide": true
 		}, {
 				"name": "BackgroundSwitcher",
-				"hide": true
+				"hide": true,
+				"cfg": {"id": 666}
 		}, {
 				"name": "Measure",
 				"hide": true,
@@ -72,9 +73,9 @@
 				"name": "Toolbar",
 				"cfg": {
 					"panelStyle": {
-              "minWidth": "300px",
-              "right": "52px",
-              "zIndex": 1000,
+             		 "minWidth": "300px",
+              		"right": "52px",
+              		"zIndex": 1000,
               "position": "absolute",
               "overflow": "auto"
           }
@@ -90,6 +91,8 @@
 			}, "Search", "ScaleBox", {
     			"name": "ZoomAll",
     			"hideFrom": ["Toolbar"]
-				}, "MapLoading", "Snapshot", "Help", "FeatureSelector"]
+				}, {"name": "MapLoading",
+				"hideFrom": ["Toolbar"]
+			}, "Snapshot", "Help", "FeatureSelector"]
 	}
 }

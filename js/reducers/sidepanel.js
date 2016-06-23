@@ -22,7 +22,7 @@ const initialState = {
         style: {
             position: "absolute",
             top: 0,
-            left: "350px",
+            left: "450px",
             right: 0,
             height: "100%"
         }

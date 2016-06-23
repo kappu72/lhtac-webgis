@@ -173,11 +173,8 @@
                 },
                 {
                     "fieldId": 2,
-                    "checkboxStyle": {"width": 130},
+                    "checkboxStyle": {"width": 181},
                     "label": "Accident Severity",
-                    "optionsLabels": {
-                        "Property Dmg Report": "Property Dmg"
-                    },
                     "attribute": "severity",
                     "multivalue": true,
                     "toolbar": true,
@@ -189,7 +186,7 @@
                 {
                     "fieldId": 3,
                     "label": "Accident Year",
-                    "checkboxStyle": {"width": 80},
+                    "checkboxStyle": {"width": 63},
                     "attribute": "accident_year",
                     "multivalue": true,
                     "toolbar": true,
@@ -202,7 +199,7 @@
                     "fieldId": 4,
                     "label": "Day(s) of Week",
                     "attribute": "day_of_week",
-                    "checkboxStyle": {"width": 80},
+                    "checkboxStyle": {"width": 117.3},
                     "multivalue": true,
                     "required": true,
                     "sort": "ASC",
@@ -246,11 +243,11 @@
                     "fieldId": 7,
                     "label": "Direction of Travel",
                     "attribute": "direction_of_travel",
-                    "checkboxStyle": {"width": 45},
+                    "checkboxStyle": {"width": 53},
                     "multivalue": true,
                     "toolbar": true,
                     "optionsLabels": {
-                        "null": "Blank"
+                        "null": "Blank/Missing"
                     },
                     "sort": "ASC",
                     "required": true,
@@ -259,7 +256,7 @@
                 },
                 {
                     "fieldId": 8,
-                    "checkboxStyle": {"width": 130},
+                    "checkboxStyle": {"width": 115},
                     "label": "First Harmful Event",
                     "attribute": "first_harmful_event",
                     "multivalue": true,
