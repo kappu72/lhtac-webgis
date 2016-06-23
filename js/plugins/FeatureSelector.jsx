@@ -52,6 +52,8 @@ const FeatureSelector = React.createClass({
         addLayer: React.PropTypes.func,
         changeLayerProperties: React.PropTypes.func,
         changeHighlightStatus: React.PropTypes.func,
+        queryform: React.PropTypes.object,
+        advancedFilterStatus: React.PropTypes.bool,
         error: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool])
     },
     contextTypes: {
@@ -59,6 +61,7 @@ const FeatureSelector = React.createClass({
     },
     getDefaultProps() {
         return {
+            advancedFilterStatus: false,
             bboxGlyph: "unchecked",
             polyGlyph: "edit",
             drawFeatures: true,
@@ -67,6 +70,7 @@ const FeatureSelector = React.createClass({
                 {id: "BBOX", name: "queryform.spatialfilter.methods.box"},
                 {id: "Polygon", name: "queryform.spatialfilter.methods.poly"}
             ],
+            simpleFilterFields: [],
             changeDrawingStatus: () => {},
             loadFeatures: () => {},
             addLayer: () => {},
@@ -115,7 +119,11 @@ const FeatureSelector = React.createClass({
                     operation: spatialField.operation,
                     geometry: intersection
                 };
-                let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, {spatialField: newSpatialFilter}, "1.1.0");
+                let filterOpt = {spatialField: newSpatialFilter};
+                if (this.props.advancedFilterStatus && this.props.queryform.simpleFilterFields && this.props.queryform.simpleFilterFields.length > 0) {
+                    filterOpt.simpleFilterFields = this.props.queryform.simpleFilterFields;
+                }
+                let ogcFilter = FilterUtils.toOGCFilter(nextProps.activeLayer.name, filterOpt, "1.1.0");
                 this.props.loadFeatures(nextProps.queryform.searchUrl, ogcFilter, this.addKey);
                 if (!this.addKey) {
                     this.props.changeHighlightStatus('disabled');
@@ -190,15 +198,17 @@ const selector = createSelector([
     (state) => (state.draw || {}),
     (state) => (state.featureselector || {}),
     (state) => (state.queryform || {}),
-    (state) => (state.highlight && state.highlight.status || 'disabled')
-], (activeLayer, draw, featureselector, queryform, hstatus) => ({
+    (state) => (state.highlight && state.highlight.status || 'disabled'),
+    (state) => (state.advancedfilter || {})
+], (activeLayer, draw, featureselector, queryform, hstatus, advancedfilter) => ({
     activeLayer,
     open: (activeLayer && activeLayer.params && activeLayer.params.cql_filter
           && activeLayer.params.cql_filter !== "INCLUDE") ? true : false,
     ...draw,
     ...featureselector,
     queryform,
-    hstatus
+    hstatus,
+    advancedFilterStatus: advancedfilter.filterstatus
 }));
 
 const FeatureSelectorPlugin = connect(selector, {

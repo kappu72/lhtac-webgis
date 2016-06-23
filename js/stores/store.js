@@ -35,6 +35,7 @@ module.exports = (plugins) => {
         mapInitialConfig: () => {return null; },
         lhtac: () => {return {}; },
         queryform: require('../../MapStore2/web/client/reducers/queryform'),
+        advancedfilter: require('../reducers/advancedfilter'),
         ...pluginsReducers
     });
 

@@ -151,7 +151,128 @@
                 "headerName": "Events",
                 "width": 180
             }
-        ]
+        ],
+        "advancedFilter": {
+            "searchUrl": "http://demo.geo-solutions.it/geoserver/ows?service=WPS",
+            "type": "WPS",
+            "cql": "INCLUDE",
+            "fieldsConfig": [
+                {
+                    "fieldId": 1,
+                    "label": "Highway System",
+                    "attribute": "highway_system",
+                    "multivalue": true,
+                    "optionsLabels": {
+                        "local": "Local",
+                        "state": "State"
+                    },
+                    "required": true,
+                    "sort": "ASC",
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 2,
+                    "checkboxStyle": {"width": 130},
+                    "label": "Accident Severity",
+                    "optionsLabels": {
+                        "Property Dmg Report": "Property Dmg"
+                    },
+                    "attribute": "severity",
+                    "multivalue": true,
+                    "toolbar": true,
+                    "sort": "ASC",
+                    "required": true,
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 3,
+                    "label": "Accident Year",
+                    "checkboxStyle": {"width": 80},
+                    "attribute": "accident_year",
+                    "multivalue": true,
+                    "toolbar": true,
+                    "required": true,
+                    "sort": "ASC",
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 4,
+                    "label": "Day(s) of Week",
+                    "attribute": "day_of_week",
+                    "checkboxStyle": {"width": 80},
+                    "multivalue": true,
+                    "required": true,
+                    "sort": "ASC",
+                    "toolbar": true,
+                    "defaultExpanded": true,
+                    "collapsible": true,
+                    "defaultOptions": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday" , "Saturday", "Sunday"]
+                },
+                {
+                    "fieldId": 5,
+                    "label": "Intersection Related?",
+                    "attribute": "intersection_related",
+                    "type": "bool",
+                    "multivalue": true,
+                    "required": true,
+                    "optionsLabels": {
+                        "true": "Y",
+                        "false": "N"
+                    },
+                    "sort": "DESC",
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 6,
+                    "label": "Lane Departure?",
+                    "attribute": "lane_dep",
+                    "type": "bool",
+                    "multivalue": true,
+                    "required": true,
+                    "optionsLabels": {
+                        "true": "Y",
+                        "false": "N"
+                    },
+                    "sort": "DESC",
+                    "defaultExpanded": true,
+                    "collapsible": true
+
+                },
+                {
+                    "fieldId": 7,
+                    "label": "Direction of Travel",
+                    "attribute": "direction_of_travel",
+                    "checkboxStyle": {"width": 45},
+                    "multivalue": true,
+                    "toolbar": true,
+                    "optionsLabels": {
+                        "null": "Blank"
+                    },
+                    "sort": "ASC",
+                    "required": true,
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 8,
+                    "checkboxStyle": {"width": 130},
+                    "label": "First Harmful Event",
+                    "attribute": "first_harmful_event",
+                    "multivalue": true,
+                    "toolbar": true,
+                    "required": true,
+                    "sort": "ASC",
+                    "defaultExpanded": true,
+                    "maxLabelSize": 14,
+                    "collapsible": true
+                }
+            ]
+        }
+
 			},
       {
 				"type": "wms",

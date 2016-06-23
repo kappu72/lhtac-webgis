@@ -18,8 +18,10 @@ const {
     zoneSearch,
     // openMenu,
     zoneChange,
-    resetZones
+    resetZones,
     // zoneSelect
+    simpleFilterFieldUpdate,
+    removeAllSimpleFilterFields
 } = require('../../MapStore2/web/client/actions/queryform');
 
 const {
@@ -37,6 +39,12 @@ const {
 const {
     featureSelectorReset
 } = require('../actions/featureselector');
+
+const {
+    createFilterConfig,
+    toggleFilter,
+    setBaseCqlFilter
+} = require('../actions/advancedfilter');
 
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,
@@ -73,10 +81,32 @@ const WMSCrossLayerFilter = connect((state) => ({
             onQuery: changeLayerProperties,
             onReset: resetZones,
             changeMapView,
-            featureSelectorReset
+            featureSelectorReset,
+            createFilterConfig,
+            removeAllSimpleFilterFields,
+            setBaseCqlFilter
         }, dispatch)
     };
 })(require('../components/WMSCrossLayerFilter'));
+
+const AdvancedFilter = connect((state) => ({
+    fieldsConfig: state.queryform && state.queryform.simpleFilterFields || [],
+    loading: state.advancedfilter && state.advancedfilter.requests.length > 0,
+    filterstatus: state.advancedfilter && state.advancedfilter.filterstatus,
+    spatialField: state.queryform.spatialField,
+    activeLayer: state.lhtac.activeLayer,
+    baseCqlFilter: state.advancedfilter && state.advancedfilter.baseCqlFilter,
+    error: state.advancedfilter && state.advancedfilter.error
+}), {
+    simpleFilterFieldUpdate,
+    changeLayerProperties,
+    toggleFilter,
+    featureSelectorReset,
+    changeHighlightStatus: highlightStatus,
+    changeDrawingStatus: changeDrawingStatus
+
+})(require('../components/AdvancedFilter'));
+
 
 const AccordionPanel = React.createClass({
     propTypes: {
@@ -106,7 +136,7 @@ const AccordionPanel = React.createClass({
                 </Panel>
                 <Panel className="lhtac-panel" header="Advanced Filter" eventKey="2">
                     <div style={{minHeight: this.props.height - 113}}>
-                        <span/>
+                       <AdvancedFilter/>
                     </div>
                 </Panel>
             </PanelGroup>

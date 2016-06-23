@@ -82,6 +82,14 @@
 		}, {
 				"name": "ContextSwitch",
 				"hide": true
-		}, "MousePosition", "Search", "ScaleBox", "ZoomAll", "MapLoading", "Snapshot", "Help", "FeatureSelector"]
+		}, {
+			"name": "MousePosition",
+			"cfg": {
+					"copyToClipboardEnabled": true
+				}
+			}, "Search", "ScaleBox", {
+    			"name": "ZoomAll",
+    			"hideFrom": ["Toolbar"]
+				}, "MapLoading", "Snapshot", "Help", "FeatureSelector"]
 	}
 }

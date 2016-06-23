@@ -16,6 +16,7 @@ const I18N = require('../../MapStore2/web/client/components/I18N/I18N');
 const mapUtils = require('../../MapStore2/web/client/utils/MapUtils');
 const CoordinatesUtils = require('../../MapStore2/web/client/utils/CoordinatesUtils');
 
+const LhtacFilterUtils = require('../utils/LhtacFilterUtils');
 const WMSCrossLayerFilter = React.createClass({
     propTypes: {
         params: React.PropTypes.object,
@@ -41,7 +42,11 @@ const WMSCrossLayerFilter = React.createClass({
                 onQuery: () => {},
                 onReset: () => {},
                 changeMapView: () => {},
-                changeDrawingStatus: () => {}
+                changeDrawingStatus: () => {},
+                createFilterConfig: () => {},
+                removeAllSimpleFilterFields: () => {},
+                setBaseCqlFilter: () => {}
+
             }
         };
     },
@@ -75,43 +80,20 @@ const WMSCrossLayerFilter = React.createClass({
         );
     },
     search() {
-        let zone;
         this.props.actions.featureSelectorReset();
-        // Get the latest zone with value in the array
-        for (let i = this.props.spatialField.zoneFields.length - 1; i >= 0; i--) {
-            if (this.props.spatialField.zoneFields[i].value) {
-                zone = this.props.spatialField.zoneFields[i];
-                break;
-            }
-        }
 
-        // Get the attribute name (check for dotted notation)
-        let attribute = zone.valueField.indexOf(".") !== -1 ? zone.valueField.split('.')[zone.valueField.split('.').length - 1] : zone.valueField;
-
-        // Prepare the cql cross layer filter
-        let filter = this.props.spatialField.operation +
-            "(" + this.props.spatialField.attribute +
-                ", collectGeometries(queryCollection('" +
-                    zone.typeName +
-                    "', '" + zone.geometryName +
-                    "', '" + attribute;
-
-        if (zone.value instanceof Array) {
-            filter += " IN (";
-            zone.value.forEach((value, index) => {
-                filter += "''" + value + "''";
-                if (index < zone.value.length - 1) {
-                    filter += ",";
-                }
-            });
-            filter += ")')))";
-        } else {
-            filter += " = ''" + zone.value + "''')))";
-        }
+        let filter = LhtacFilterUtils.getZoneCrossFilter(this.props.spatialField);
 
         let params = assign({}, this.props.params, {cql_filter: filter});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
-        this.props.actions.changeDrawingStatus('start', 'BBOX', 'wmscrossfilter', []);
+        this.props.actions.setBaseCqlFilter(filter);
+        if (this.props.activeLayer && this.props.activeLayer.advancedFilter) {
+            this.props.actions.removeAllSimpleFilterFields();
+            this.props.activeLayer.advancedFilter.fieldsConfig.map((field) => {
+                let wpsRequest = LhtacFilterUtils.getWpsRequest(this.props.activeLayer.name, this.props.activeLayer.advancedFilter.cql || filter, field.attribute);
+                this.props.actions.createFilterConfig(wpsRequest, this.props.activeLayer.advancedFilter.searchUrl, field);
+            }, this);
+        }
         // Zoom to the selected geometry
         if (this.props.spatialField.geometry && this.props.spatialField.geometry.extent) {
             const bbox = this.props.spatialField.geometry.extent;
@@ -131,9 +113,12 @@ const WMSCrossLayerFilter = React.createClass({
                 rotation: 0
             }, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
         }
+        this.props.actions.changeDrawingStatus('start', 'BBOX', 'wmscrossfilter', []);
+        this.props.actions.changeHighlightStatus('disabled');
     },
     reset() {
         this.props.actions.onReset();
+        this.props.actions.removeAllSimpleFilterFields();
         this.props.actions.changeDrawingStatus('clean', 'BBOX', 'wmscrossfilter', []);
         this.props.actions.changeHighlightStatus('disabled');
         let params = assign(this.props.params, {cql_filter: "INCLUDE"});
