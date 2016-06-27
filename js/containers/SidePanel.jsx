@@ -67,6 +67,7 @@ const SidePanel = React.createClass({
             }}>
                 <div id="lhac-sidepanel" style={panelStyle}>
                     <div className="header">
+
                         <span className="close" onClick={this.toggle}>×</span>
                         <span className="pin" style={pinStyle} onClick={this.pin}><Glyphicon glyph="pushpin"/></span>
                     </div>
@@ -74,9 +75,13 @@ const SidePanel = React.createClass({
                         <div style={{height: accHeight, overflowY: "auto"}}>
                             <AccordionPanel height={accHeight}/>
                         </div>
-                        <div style={{height: statHeight, overflowY: "auto"}}>
-                            <Panel style={{marginBottom: 0}} className="lhtac-panel statistics-panel statistics-container" header={<h4>Statistics</h4>}>
-                                <Statistics height={statHeight}/>
+                        <div className="lhtac-panel panel-heading"
+                        style={{paddingTop: 1, paddingBottom: 0, height: 33, color: "#333", backgroundColor: "#f5f5f5", borderColor: "#ddd", border: "1px solid #ddd"}}>
+                            <h4>Statistics</h4>
+                        </div>
+                        <div style={{height: statHeight - 33, overflowY: "auto"}}>
+                            <Panel style={{marginBottom: 0}} className="lhtac-panel statistics-panel statistics-container">
+                                <Statistics height={statHeight - 33}/>
                             </Panel>
                         </div>
                     </div>

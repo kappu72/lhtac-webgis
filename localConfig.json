@@ -89,10 +89,13 @@
 					"copyToClipboardEnabled": true
 				}
 			}, "Search", "ScaleBox", {
-    			"name": "ZoomAll",
+    			"name": "ZoomToMaxExtent",
+    			"cfg": {
+    				"tooltipPlace": "right"
+    			},
     			"hideFrom": ["Toolbar"]
 				}, {"name": "MapLoading",
 				"hideFrom": ["Toolbar"]
-			}, "Snapshot", "Help", "FeatureSelector"]
+			}, "Snapshot", "FeatureSelector"]
 	}
 }

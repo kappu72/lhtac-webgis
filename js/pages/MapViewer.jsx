@@ -8,7 +8,7 @@
 const React = require('react');
 
 const {connect} = require('react-redux');
-
+const {createSelector} = require('reselect');
 const assign = require('object-assign');
 
 const ConfigUtils = require('../../MapStore2/web/client/utils/ConfigUtils');
@@ -34,6 +34,16 @@ const SouthPanel = connect((state) => ({
     resizeHeight
 })(require("../containers/SouthPanel"));
 
+const {layersSelector} = require('../../MapStore2/web/client/selectors/layers');
+
+
+const selector = createSelector([layersSelector, (state) => (state.sidepanel.expanded)], (layers, expanded) => ({
+    loading: layers && layers.some((layer) => layer.loading),
+    show: !expanded
+}));
+const SidePanelBtn = connect(selector, {
+    toggleSidePanel
+})(require('../components/SidePanelBtn'));
 const MapViewer = React.createClass({
     propTypes: {
         mode: React.PropTypes.string,
@@ -90,6 +100,7 @@ const MapViewer = React.createClass({
                     </div>
                     <div id="left-edge" onMouseEnter={() => { this.tooglePanel(false); }} onMouseLeave={() => { if (this.timeOut) { clearTimeout(this.timeOut); } }}/>
                     <SouthPanel />
+                    <SidePanelBtn />
                 </div>
             );
         }

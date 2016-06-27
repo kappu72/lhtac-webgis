@@ -9,7 +9,7 @@ const React = require('react');
 
 const assign = require('object-assign');
 
-const {Button, Glyphicon, ButtonToolbar, Modal} = require('react-bootstrap');
+const {Button, Glyphicon, ButtonToolbar, Modal, OverlayTrigger, Tooltip} = require('react-bootstrap');
 
 const I18N = require('../../MapStore2/web/client/components/I18N/I18N');
 
@@ -64,6 +64,11 @@ const WMSCrossLayerFilter = React.createClass({
                         <Glyphicon glyph="glyphicon glyphicon-remove"/>
                         <span style={{paddingLeft: "2px"}}><strong><I18N.Message msgId={"queryform.reset"}/></strong></span>
                     </Button>
+                    <OverlayTrigger placement="right" overlay={(<Tooltip id="lab"><strong><I18N.Message msgId={"lhtac.crossfilter.zoomBtn"}/></strong></Tooltip>)}>
+                    <Button disabled={!this.props.toolbarEnabled || (this.zoomArgs === null || this.zoomArgs === undefined)} id="zoomtoarea" onClick={this.zoomToSelectedArea}>
+                        <Glyphicon glyph="resize-full"/>
+                    </Button>
+                    </OverlayTrigger>
                 </ButtonToolbar>
                 <Modal show={this.props.showGeneratedFilter ? true : false} bsSize="large">
                     <Modal.Header>
@@ -101,8 +106,7 @@ const WMSCrossLayerFilter = React.createClass({
 
             const newZoom = mapUtils.getZoomForExtent(CoordinatesUtils.reprojectBbox(bbox, "EPSG:4326", this.props.mapConfig.present.projection), mapSize, 0, 21, null);
             const newCenter = mapUtils.getCenterForExtent(bbox, "EPSG:4326");
-
-            this.props.actions.changeMapView(newCenter, newZoom, {
+            this.zoomArgs = [newCenter, newZoom, {
                 bounds: {
                    minx: bbox[0],
                    miny: bbox[1],
@@ -111,18 +115,26 @@ const WMSCrossLayerFilter = React.createClass({
                 },
                 crs: "EPSG:4326",
                 rotation: 0
-            }, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
+            }];
+            this.props.actions.changeMapView(...this.zoomArgs, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
         }
         this.props.actions.changeDrawingStatus('start', 'BBOX', 'wmscrossfilter', []);
         this.props.actions.changeHighlightStatus('disabled');
     },
     reset() {
+        this.zoomArgs = null;
         this.props.actions.onReset();
         this.props.actions.removeAllSimpleFilterFields();
         this.props.actions.changeDrawingStatus('clean', 'BBOX', 'wmscrossfilter', []);
         this.props.actions.changeHighlightStatus('disabled');
         let params = assign(this.props.params, {cql_filter: "INCLUDE"});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
+    },
+    zoomToSelectedArea() {
+        if (this.zoomArgs) {
+            this.props.actions.changeMapView(...this.zoomArgs, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
+        }
+
     }
 });
 

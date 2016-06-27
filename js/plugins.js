@@ -23,13 +23,13 @@ module.exports = {
         SearchPlugin: require('../MapStore2/web/client/plugins/Search'),
         ScaleBoxPlugin: require('../MapStore2/web/client/plugins/ScaleBox'),
         LocatePlugin: require('../MapStore2/web/client/plugins/Locate'),
-        ZoomAllPlugin: require('../MapStore2/web/client/plugins/ZoomAll'),
         MapLoadingPlugin: require('../MapStore2/web/client/plugins/MapLoading'),
         HelpPlugin: require('../MapStore2/web/client/plugins/Help'),
         AboutPlugin: require('./plugins/About'),
         ContactUsPlugin: require('./plugins/ContactUs'),
         ContextSwitchPlugin: require('./plugins/ContextSwitch'),
-        FeatureSelectorPlugin: require('./plugins/FeatureSelector')
+        FeatureSelectorPlugin: require('./plugins/FeatureSelector'),
+        ZoomToMaxExtentPlugin: require('./plugins/ZoomToMaxExtent')
     },
     requires: {}
 };
