@@ -76,7 +76,7 @@ const SidePanel = React.createClass({
                             <AccordionPanel height={accHeight}/>
                         </div>
                         <div className="lhtac-panel panel-heading"
-                        style={{paddingTop: 1, paddingBottom: 0, height: 33, color: "#333", backgroundColor: "#f5f5f5", borderColor: "#ddd", border: "1px solid #ddd"}}>
+                        style={{paddingTop: 1, paddingBottom: 0, height: 33, color: "#333", backgroundColor: "#f5f5f5", borderColor: "#ddd", borderBottom: "1px solid #ddd"}}>
                             <h4>Statistics</h4>
                         </div>
                         <div style={{height: statHeight - 33, overflowY: "auto"}}>

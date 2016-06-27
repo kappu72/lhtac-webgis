@@ -7,7 +7,8 @@
  */
 
 const React = require('react');
-const {Button, Glyphicon} = require('react-bootstrap');
+const {Button, Glyphicon, OverlayTrigger, Tooltip} = require('react-bootstrap');
+const Message = require('../../MapStore2/web/client/components/I18N/Message');
 
 const SidePanelBtn = React.createClass({
     propTypes: {
@@ -28,8 +29,11 @@ const SidePanelBtn = React.createClass({
     render() {
         return this.props.show ? (
             <div id="side-button" className={this.props.loading ? "loading" : "default"}>
+                <OverlayTrigger placement="right" overlay={(<Tooltip id="sidePanelBtnTooltip"><Message msgId="lhtac.sideBtnTooltip"/></Tooltip>)}>
                 <Button bsSize="xsmall"
-                onClick={() => this.props.toggleSidePanel(false)}><Glyphicon glyph="menu-hamburger"/></Button>
+                onClick={() => this.props.toggleSidePanel(false )}><Glyphicon glyph="menu-hamburger"/></Button>
+            </OverlayTrigger>
+
             </div>
             ) :
         null;

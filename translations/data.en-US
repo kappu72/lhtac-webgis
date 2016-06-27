@@ -445,7 +445,8 @@
          "lhtac" : {
             "crossfilter" : {
                 "zoomBtn": "Zoom To Active Area Filter"
-         }
+            },
+            "sideBtnTooltip": "Show Side Panel"
          }
      }
  }
