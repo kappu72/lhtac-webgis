@@ -29,8 +29,7 @@
 				"hide": true
 		}, {
 				"name": "BackgroundSwitcher",
-				"hide": true,
-				"cfg": {"id": 666}
+				"hide": true
 		}, {
 				"name": "Measure",
 				"hide": true,
