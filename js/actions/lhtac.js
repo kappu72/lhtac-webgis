@@ -7,15 +7,24 @@
  */
 
 const SWITCH_LAYER = 'SWITCH_LAYER';
-
-function switchLayer(id) {
+const SET_ACTIVE_ZONE = 'SET_ACTIVE_ZONE';
+function switchLayer(layer) {
     return {
         type: SWITCH_LAYER,
-        layerId: id
+        layer
     };
 }
-
+function setActiveZone(id, value, exclude) {
+    return {
+        type: SET_ACTIVE_ZONE,
+        id,
+        value,
+        exclude
+    };
+}
 module.exports = {
     SWITCH_LAYER,
-    switchLayer
+    SET_ACTIVE_ZONE,
+    switchLayer,
+    setActiveZone
 };

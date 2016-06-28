@@ -9,10 +9,12 @@
 
 const React = require('react');
 const {connect} = require('react-redux');
+const {createSelector} = require('reselect');
 const {isEqual} = require('lodash');
 const FeatureGrid = require('../../MapStore2/web/client/components/data/featuregrid/FeatureGrid');
 const {
     updateHighlighted } = require('../../MapStore2/web/client/actions/highlight');
+const lhtac = require('../selectors/lhtac');
 
 const LhtacFeatureGrid = React.createClass({
     propTypes: {
@@ -61,11 +63,15 @@ const LhtacFeatureGrid = React.createClass({
     }
 });
 
-module.exports = connect((state) => ({
-    features: state.featureselector.features || [],
-    highlightedFeatures: state.highlight.features,
-    activeLayer: state.lhtac && state.lhtac.activeLayer || {}
-
-}), {
+const selector = createSelector([
+    (state) => (state.featureselector.features || []),
+    (state) => (state.highlight.features),
+    lhtac],
+    (features, highlightedFeatures, lhtacState)=> ({
+        features,
+        highlightedFeatures,
+        activeLayer: lhtacState.activeLayer
+    }));
+module.exports = connect(selector, {
     updateHighlighted
 })(LhtacFeatureGrid);

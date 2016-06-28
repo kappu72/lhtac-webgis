@@ -30,6 +30,7 @@ const {
     changeLayerProperties
 } = require('../../MapStore2/web/client/actions/layers');
 
+const lhtac = require('../selectors/lhtac');
 
 const FeatureSelector = React.createClass({
     propTypes: {
@@ -194,16 +195,15 @@ const FeatureSelector = React.createClass({
     }
 });
 const selector = createSelector([
-    (state) => (state.lhtac && state.lhtac.activeLayer || {}),
+     lhtac,
     (state) => (state.draw || {}),
     (state) => (state.featureselector || {}),
     (state) => (state.queryform || {}),
     (state) => (state.highlight && state.highlight.status || 'disabled'),
     (state) => (state.advancedfilter || {})
-], (activeLayer, draw, featureselector, queryform, hstatus, advancedfilter) => ({
-    activeLayer,
-    open: (activeLayer && activeLayer.params && activeLayer.params.cql_filter
-          && activeLayer.params.cql_filter !== "INCLUDE") ? true : false,
+], (lhtacState, draw, featureselector, queryform, hstatus, advancedfilter) => ({
+    activeLayer: lhtacState.activeLayer,
+    open: lhtacState.filterActive,
     ...draw,
     ...featureselector,
     queryform,
@@ -223,8 +223,6 @@ const FeatureSelectorPlugin = connect(selector, {
 module.exports = {
     FeatureSelectorPlugin: FeatureSelectorPlugin,
     reducers: {
-        featureselector: require("../reducers/featureselector"),
-        draw: require('../../MapStore2/web/client/reducers/draw'),
-        highlight: require('../../MapStore2/web/client/reducers/highlight')
+        featureselector: require("../reducers/featureselector")
     }
 };

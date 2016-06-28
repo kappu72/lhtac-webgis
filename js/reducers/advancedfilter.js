@@ -32,13 +32,15 @@ function advancedfilter(state = initialState, action) {
         }
         case TOGGLE_FILTER: {
             return {...state, filterstatus: action.status};
-
         }
         case BASE_CQL_FILTER: {
             return {...state, baseCqlFilter: action.cql};
         }
         case REMOVE_ALL_SIMPLE_FILTER_FIELDS: {
             return {...state, error: false};
+        }
+        case 'SWITCH_LAYER': {
+            return initialState;
         }
         default:
             return state;

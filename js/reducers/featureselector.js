@@ -52,7 +52,13 @@ function featureselector(state = initialState, action) {
         case 'ZONES_RESET': {
             return initialState;
         }
+        case 'BASE_CQL_FILTER': {
+            return initialState;
+        }
         case FEATURE_SELECTOR_REST: {
+            return initialState;
+        }
+        case 'TOGGLE_FILTER': {
             return initialState;
         }
         default:

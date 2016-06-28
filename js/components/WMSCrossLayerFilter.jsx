@@ -42,13 +42,15 @@ const WMSCrossLayerFilter = React.createClass({
                 onQuery: () => {},
                 onReset: () => {},
                 changeMapView: () => {},
-                changeDrawingStatus: () => {},
                 createFilterConfig: () => {},
-                removeAllSimpleFilterFields: () => {},
                 setBaseCqlFilter: () => {}
-
             }
         };
+    },
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.activeLayer.id !== this.props.activeLayer.id) {
+            this.zoomArgs = null;
+        }
     },
     render() {
         let queryDisabled = !this.props.toolbarEnabled || !this.props.spatialField.geometry;
@@ -85,15 +87,14 @@ const WMSCrossLayerFilter = React.createClass({
         );
     },
     search() {
-        this.props.actions.featureSelectorReset();
 
         let filter = LhtacFilterUtils.getZoneCrossFilter(this.props.spatialField);
+        this.props.actions.setBaseCqlFilter(filter);
 
         let params = assign({}, this.props.params, {cql_filter: filter});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
-        this.props.actions.setBaseCqlFilter(filter);
+
         if (this.props.activeLayer && this.props.activeLayer.advancedFilter) {
-            this.props.actions.removeAllSimpleFilterFields();
             this.props.activeLayer.advancedFilter.fieldsConfig.map((field) => {
                 let wpsRequest = LhtacFilterUtils.getWpsRequest(this.props.activeLayer.name, this.props.activeLayer.advancedFilter.cql || filter, field.attribute);
                 this.props.actions.createFilterConfig(wpsRequest, this.props.activeLayer.advancedFilter.searchUrl, field);
@@ -118,15 +119,10 @@ const WMSCrossLayerFilter = React.createClass({
             }];
             this.props.actions.changeMapView(...this.zoomArgs, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
         }
-        this.props.actions.changeDrawingStatus('start', 'BBOX', 'wmscrossfilter', []);
-        this.props.actions.changeHighlightStatus('disabled');
     },
     reset() {
         this.zoomArgs = null;
         this.props.actions.onReset();
-        this.props.actions.removeAllSimpleFilterFields();
-        this.props.actions.changeDrawingStatus('clean', 'BBOX', 'wmscrossfilter', []);
-        this.props.actions.changeHighlightStatus('disabled');
         let params = assign(this.props.params, {cql_filter: "INCLUDE"});
         this.props.actions.onQuery(this.props.activeLayer.id, {params: params});
     },

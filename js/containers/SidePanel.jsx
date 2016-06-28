@@ -9,18 +9,24 @@ const React = require('react');
 const {connect} = require('react-redux');
 const {getWindowSize} = require('../../MapStore2/web/client/utils/AgentUtils');
 const {Glyphicon, Panel} = require('react-bootstrap');
+const {createSelector} = require('reselect');
+const lhtac = require('../selectors/lhtac');
 
 const AccordionPanel = require("./AccordionPanel");
 const {
     highlightStatus
 } = require('../../MapStore2/web/client/actions/highlight');
 const {featureSelectorReset} = require("../actions/featureselector");
-
-const Statistics = connect((state) => ({
-    activeLayer: state.lhtac.activeLayer,
-    selectedfeatures: state.featureselector.features.length,
-    highlightedfeatures: state.highlight.highlighted
-}), {
+const statisticsSelector = createSelector([
+    lhtac,
+    (state) => (state.featureselector.features.length),
+    (state) => (state.highlight.highlighted)],
+    (lhtacState, selectedfeatures, highlightedfeatures) => ({
+        activeLayer: lhtacState.activeLayer,
+        selectedfeatures,
+        highlightedfeatures
+    }));
+const Statistics = connect(statisticsSelector, {
     highlightStatus,
     featureSelectorReset
 })(require("../components/Statistics"));

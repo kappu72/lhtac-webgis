@@ -7,6 +7,8 @@
  */
 const React = require('react');
 const {connect} = require('react-redux');
+const {createSelector} = require('reselect');
+const lhtac = require('../selectors/lhtac');
 
 const {PanelGroup, Panel} = require('react-bootstrap');
 
@@ -20,8 +22,7 @@ const {
     zoneChange,
     resetZones,
     // zoneSelect
-    simpleFilterFieldUpdate,
-    removeAllSimpleFilterFields
+    simpleFilterFieldUpdate
 } = require('../../MapStore2/web/client/actions/queryform');
 
 const {
@@ -29,23 +30,11 @@ const {
 } = require('../../MapStore2/web/client/actions/layers');
 
 const {
-    changeDrawingStatus
-} = require('../../MapStore2/web/client/actions/draw');
-
-const {
-    highlightStatus
-} = require('../../MapStore2/web/client/actions/highlight');
-
-const {
-    featureSelectorReset
-} = require('../actions/featureselector');
-
-const {
     createFilterConfig,
     toggleFilter,
     setBaseCqlFilter
 } = require('../actions/advancedfilter');
-
+const {setActiveZone} = require('../actions/lhtac');
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,
     spatialField: state.queryform.spatialField,
@@ -59,52 +48,58 @@ const SpatialFilter = connect((state) => ({
             onRemoveSpatialSelection: removeSpatialSelection,
             zoneFilter: zoneGetValues,
             zoneSearch,
-            // openMenu,
+            setActiveZone,
             zoneChange
-            // zoneSelect
         }, dispatch)
     };
-})(require('../../MapStore2/web/client/components/data/query/SpatialFilter'));
+})(require('../components/LhtacSpatialFilter'));
 
 const {changeMapView} = require('../../MapStore2/web/client/actions/map');
 
-const WMSCrossLayerFilter = connect((state) => ({
-    spatialField: state.queryform.spatialField,
-    toolbarEnabled: true,
-    activeLayer: state.lhtac.activeLayer,
-    mapConfig: state.map || {}
-}), (dispatch) => {
+const WMSCrossSelector = createSelector([
+        lhtac,
+        (state) => (state.queryform.spatialField),
+        (state) => (state.map || {})
+        ],
+        (lhtacState, spatialField, mapConfig) => ({
+            activeLayer: lhtacState.activeLayer,
+            toolbarEnabled: true,
+            spatialField,
+            mapConfig
+        }));
+const WMSCrossLayerFilter = connect( WMSCrossSelector, (dispatch) => {
     return {
         actions: bindActionCreators({
-            changeHighlightStatus: highlightStatus,
-            changeDrawingStatus: changeDrawingStatus,
             onQuery: changeLayerProperties,
             onReset: resetZones,
             changeMapView,
-            featureSelectorReset,
             createFilterConfig,
-            removeAllSimpleFilterFields,
             setBaseCqlFilter
         }, dispatch)
     };
 })(require('../components/WMSCrossLayerFilter'));
 
-const AdvancedFilter = connect((state) => ({
-    fieldsConfig: state.queryform && state.queryform.simpleFilterFields || [],
-    loading: state.advancedfilter && state.advancedfilter.requests.length > 0,
-    filterstatus: state.advancedfilter && state.advancedfilter.filterstatus,
-    spatialField: state.queryform.spatialField,
-    activeLayer: state.lhtac.activeLayer,
-    baseCqlFilter: state.advancedfilter && state.advancedfilter.baseCqlFilter,
-    error: state.advancedfilter && state.advancedfilter.error
-}), {
+const AdvancedFilterSelector = createSelector([
+        lhtac,
+        (state) => (state.queryform),
+        (state) => (state.advancedfilter),
+        (state) => (state.queryform.spatialField),
+        (state) => (state.map || {})
+        ],
+        (lhtacState, queryform, advancedFilter) => ({
+            activeLayer: lhtacState.activeLayer,
+            fieldsConfig: queryform && queryform.simpleFilterFields || [],
+            loading: advancedFilter && advancedFilter.requests.length > 0,
+            filterstatus: advancedFilter && advancedFilter.filterstatus,
+            spatialField: queryform.spatialField,
+            baseCqlFilter: advancedFilter && advancedFilter.baseCqlFilter,
+            error: advancedFilter && advancedFilter.error
+        }));
+
+const AdvancedFilter = connect(AdvancedFilterSelector, {
     simpleFilterFieldUpdate,
     changeLayerProperties,
-    toggleFilter,
-    featureSelectorReset,
-    changeHighlightStatus: highlightStatus,
-    changeDrawingStatus: changeDrawingStatus
-
+    toggleFilter
 })(require('../components/AdvancedFilter'));
 
 

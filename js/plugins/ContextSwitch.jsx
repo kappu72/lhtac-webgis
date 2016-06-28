@@ -11,14 +11,15 @@ const {connect} = require('react-redux');
 const assign = require('object-assign');
 
 const {switchLayer} = require('../actions/lhtac');
-const {changeLayerProperties} = require('../../MapStore2/web/client/actions/layers');
 
-const ContextSwitch = connect((state) => ({
-    contextLayers: state.lhtac.contextLayers,
-    activeLayer: state.lhtac.activeLayer
-}), {
+const lhtac = require('../selectors/lhtac');
+const {
+    resetZones
+} = require('../../MapStore2/web/client/actions/queryform');
+
+const ContextSwitch = connect(lhtac, {
     switchLayer,
-    changeLayerProperties
+    resetZones
 })(require('../components/ContextSwitch'));
 
 module.exports = {

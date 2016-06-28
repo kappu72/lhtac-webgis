@@ -16,7 +16,7 @@ const ContextSwitch = React.createClass({
         contextLayers: React.PropTypes.array,
         dropup: React.PropTypes.bool,
         switchLayer: React.PropTypes.func,
-        changeLayerProperties: React.PropTypes.func
+        resetZones: React.PropTypes.func
     },
     getDefaultProps() {
         return {
@@ -24,7 +24,8 @@ const ContextSwitch = React.createClass({
             dropup: true,
             activeLayer: {},
             contextLayers: [],
-            switchLayer: () => {}
+            switchLayer: () => {},
+            resetZones: () => {}
         };
     },
     renderMenuItem(activeLayer) {
@@ -53,9 +54,8 @@ const ContextSwitch = React.createClass({
         );
     },
     changeContext(event, eventKey) {
-        this.props.switchLayer(eventKey);
-        this.props.changeLayerProperties(this.props.activeLayer.id, {visibility: false});
-        this.props.changeLayerProperties(eventKey, {visibility: true});
+        this.props.resetZones();
+        this.props.switchLayer(this.props.contextLayers.filter((l) => {return l.id === eventKey; })[0]);
     }
 });
 

@@ -247,3 +247,13 @@
 #side-button.loading{
     top: 130px;
 }
+.active-zone {
+    border: 1px solid green;
+    padding: 1px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+.active-zone label{
+    color: green;
+
+}

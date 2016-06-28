@@ -60,7 +60,12 @@ function sidepanel(state = initialState, action) {
             let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
             return {...state, layoutUpdates: newLayout};
         }
-        case 'FEATURE_SELECTOR_REST': {
+        case 'BASE_CQL_FILTER': {
+            let newStyle = {...state.layoutUpdates.style, height: "100%"};
+            let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
+            return {...state, layoutUpdates: newLayout};
+        }
+        case 'TOGGLE_FILTER': {
             let newStyle = {...state.layoutUpdates.style, height: "100%"};
             let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
             return {...state, layoutUpdates: newLayout};
