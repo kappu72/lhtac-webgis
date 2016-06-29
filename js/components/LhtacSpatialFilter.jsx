@@ -61,7 +61,7 @@ const SpatialFilter = React.createClass({
             this.props.spatialField.zoneFields.length > 0 ?
                 this.props.spatialField.zoneFields.map((zone) => {
                     return (
-                        <div key={zone.id} className={zone.active ? "active-zone" : ''}>
+                        <div key={zone.id} className={zone.active && zone.value && Array.isArray(zone.value) && zone.value.length > 0 ? "active-zone" : ''}>
                         <ZoneField
                             open={zone.open}
                             zoneId={zone.id}

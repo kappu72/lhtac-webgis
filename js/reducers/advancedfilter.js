@@ -34,9 +34,12 @@ function advancedfilter(state = initialState, action) {
             return {...state, filterstatus: action.status};
         }
         case BASE_CQL_FILTER: {
-            return {...state, baseCqlFilter: action.cql};
+            return {...state, baseCqlFilter: action.cql, error: false};
         }
         case REMOVE_ALL_SIMPLE_FILTER_FIELDS: {
+            return {...state, error: false};
+        }
+        case 'ZONES_RESET': {
             return {...state, error: false};
         }
         case 'SWITCH_LAYER': {
