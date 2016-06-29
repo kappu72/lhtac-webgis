@@ -21,7 +21,7 @@ function shouldReset(aId, dId, zones) {
 }
 
 
-function zoneChange (state, action) {
+function zoneChange(state, action) {
     let value; let geometry;
     const zoneFields = state.spatialField.zoneFields.map((field) => {
         if (field.id === action.id) {
@@ -131,7 +131,6 @@ function queryform(state, action) {
             }};
         }
         case 'SET_ACTIVE_ZONE': {
-            let a = {...action, type: 'ZONE_CHANGE'};
             let tmpState = zoneChange(state, action);
             return {...tmpState, spatialField: {...tmpState.spatialField,
                     zoneFields: tmpState.spatialField.zoneFields.map((field) => {
