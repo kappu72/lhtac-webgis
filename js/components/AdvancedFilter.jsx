@@ -45,7 +45,7 @@ const AdvancedFilter = React.createClass({
     },
     renderSimpleFilterFields() {
         let fields = this.props.fieldsConfig.sort((a, b) => {
-            return parseInt(a.fieldId, 10) > parseInt(b.fieldId, 10);
+            return parseInt(a.fieldId, 10) - parseInt(b.fieldId, 10);
         });
         return fields.map((f) => {
             return (<SimpleFilterField key={f.fieldId || f.attribute} updateFilter={this.props.simpleFilterFieldUpdate} {...f}/>);

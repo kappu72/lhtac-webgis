@@ -10,14 +10,14 @@ const LOAD_FEATURES = 'LOAD_FEATURES';
 const FEATURES_LOADED = 'FEATURES_LOADED';
 const NEW_GETFEATURE_REQUEST = 'NEW_GETFEATURE_REQUEST';
 const FEATURE_SELECTOR_ERROR = 'FEATURE_SELECTOR_ERROR';
-const FEATURE_SELECTOR_REST = 'FEATURE_SELECTOR_REST';
+const FEATURE_SELECTOR_RESET = 'FEATURE_SELECTOR_RESET';
 const uuid = require('node-uuid');
 const axios = require('../../MapStore2/web/client/libs/ajax');
 const {resizeHeight} = require('./sidepanel');
 
 function featureSelectorReset() {
     return {
-        type: FEATURE_SELECTOR_REST
+        type: FEATURE_SELECTOR_RESET
     };
 }
 function newGetFeatureRequest(reqId, filter) {
@@ -86,7 +86,7 @@ module.exports = {
     FEATURES_LOADED,
     NEW_GETFEATURE_REQUEST,
     FEATURE_SELECTOR_ERROR,
-    FEATURE_SELECTOR_REST,
+    FEATURE_SELECTOR_RESET,
     loadFeatures,
     featuresLoaded,
     featureSelectorError,

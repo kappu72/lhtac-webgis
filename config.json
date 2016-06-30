@@ -340,7 +340,42 @@
                 "name": "Shown on map (filtered):",
                 "value": 4204
             }
-        ]
+        ],
+        "advancedFilter": {
+            "searchUrl": "http://demo.geo-solutions.it/geoserver/ows?service=WPS",
+            "type": "WPS",
+            "cql": "INCLUDE",
+            "fieldsConfig": [
+                {
+                    "fieldId": 1,
+                    "label": "Highway System",
+                    "attribute": "highway_sy",
+                    "multivalue": true,
+                    "optionsLabels": {
+                        "local": "Local",
+                        "state": "State"
+                    },
+                    "required": true,
+                    "sort": "ASC",
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 2,
+                    "label": "Deficiency",
+                    "attribute": "deficiency",
+                    "multivalue": true,
+                    "optionsLabels": {
+                        "none": "None"
+                    },
+                    "toolbar": true,
+                    "sort": "ASC",
+                    "required": true,
+                    "defaultExpanded": true,
+                    "collapsible": true
+                }
+            ]
+        }
 			},
             {
                 "type": "vector",

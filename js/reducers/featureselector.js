@@ -13,11 +13,11 @@ const {
     FEATURES_LOADED,
     NEW_GETFEATURE_REQUEST,
     FEATURE_SELECTOR_ERROR,
-    FEATURE_SELECTOR_REST
+    FEATURE_SELECTOR_RESET
 } = require('../actions/featureselector');
 const assign = require('object-assign');
 
-const initialState = {geometry: null, features: [], request: {}};
+const initialState = {geometry: null, features: [], request: {}, error: false};
 
 function featureLoaded(add, newFeatures = [], previousFeatures) {
     return (add) ?
@@ -44,7 +44,7 @@ function featureselector(state = initialState, action) {
 
         }
         case NEW_GETFEATURE_REQUEST: {
-            return {...state, geometryStatus: "consumed", request: {id: action.reqId, state: "loading", filter: action.filter }};
+            return {...state, geometryStatus: "consumed", error: false, request: {id: action.reqId, state: "loading", filter: action.filter }};
         }
         case FEATURE_SELECTOR_ERROR: {
             return {...state, error: action.error, geometryStatus: "consumed", geometry: undefined, request: {}};
@@ -55,10 +55,10 @@ function featureselector(state = initialState, action) {
         case 'BASE_CQL_FILTER': {
             return initialState;
         }
-        case FEATURE_SELECTOR_REST: {
+        case 'TOGGLE_FILTER': {
             return initialState;
         }
-        case 'TOGGLE_FILTER': {
+        case FEATURE_SELECTOR_RESET: {
             return initialState;
         }
         default:
