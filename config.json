@@ -162,6 +162,7 @@
                     "label": "Highway System",
                     "attribute": "highway_system",
                     "multivalue": true,
+                    "type": "list",
                     "optionsLabels": {
                         "local": "Local",
                         "state": "State"
@@ -179,6 +180,7 @@
                     "multivalue": true,
                     "toolbar": true,
                     "sort": "ASC",
+                    "type": "list",
                     "required": true,
                     "defaultExpanded": true,
                     "collapsible": true
@@ -203,6 +205,7 @@
                     "multivalue": true,
                     "required": true,
                     "sort": "ASC",
+                    "type": "list",
                     "toolbar": true,
                     "defaultExpanded": true,
                     "collapsible": true,
@@ -212,7 +215,7 @@
                     "fieldId": 5,
                     "label": "Intersection Related?",
                     "attribute": "intersection_related",
-                    "type": "bool",
+                    "type": "list",
                     "multivalue": true,
                     "required": true,
                     "optionsLabels": {
@@ -227,7 +230,7 @@
                     "fieldId": 6,
                     "label": "Lane Departure?",
                     "attribute": "lane_dep",
-                    "type": "bool",
+                    "type": "list",
                     "multivalue": true,
                     "required": true,
                     "optionsLabels": {
@@ -242,6 +245,7 @@
                 {
                     "fieldId": 7,
                     "label": "Direction of Travel",
+                    "type": "list",
                     "attribute": "direction_of_travel",
                     "checkboxStyle": {"width": 53},
                     "multivalue": true,
@@ -256,6 +260,7 @@
                 },
                 {
                     "fieldId": 8,
+                    "type": "list",
                     "checkboxStyle": {"width": 115},
                     "label": "First Harmful Event",
                     "attribute": "first_harmful_event",
@@ -351,6 +356,7 @@
                     "label": "Highway System",
                     "attribute": "highway_sy",
                     "multivalue": true,
+                    "type": "list",
                     "optionsLabels": {
                         "local": "Local",
                         "state": "State"
@@ -362,15 +368,89 @@
                 },
                 {
                     "fieldId": 2,
+                    "type": "list",
                     "label": "Deficiency",
                     "attribute": "deficiency",
+                    "checkboxStyle": {"width": 180},
+                    "maxLabelSize": 30,
                     "multivalue": true,
                     "optionsLabels": {
-                        "none": "None"
+                        "none": "None",
+                        "null": "Blank/Missing"
                     },
                     "toolbar": true,
                     "sort": "ASC",
                     "required": true,
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 3,
+                    "label": "Year Built",
+                    "attribute": "year_built",
+                    "type": "number",
+                    "operator": "><",
+                    "defaultExpanded": true,
+                    "collapsible": true,
+                    "optionsLabels": {
+                        "lowLabel": "Min Year",
+                        "upLabel": "Max Year"
+                    },
+                    "options": {
+                        "step": 1,
+                        "format": "###"
+                    }
+                },
+                {
+                    "fieldId": 4,
+                    "label": "Bridge Length (ft)",
+                    "attribute": "length_ft",
+                    "multivalue": false,
+                    "type": "number",
+                    "operator": "><",
+                    "defaultExpanded": true,
+                    "collapsible": true,
+                    "optionsLabels": {
+                        "lowLabel": "Min Length",
+                        "upLabel": "Max Length"
+                    },
+                    "options": {
+                        "step": 100
+                    }
+                },
+                {
+                    "fieldId": 5,
+                    "label": "Sufficiency Rating (0-100)",
+                    "attribute": "sufficienc",
+                    "type": "number",
+                    "operator": "><",
+                    "defaultExpanded": true,
+                    "collapsible": true,
+                    "optionsLabels": {
+                        "lowLabel": "Min Rating",
+                        "upLabel": "Max Rating"
+                    },
+                    "options": {
+                        "step": 1,
+                        "precision": 1,
+                        "format": "#.###,"
+                    }
+                },
+                {
+                    "fieldId": 6,
+                    "label": "Carries",
+                    "attribute": "carries",
+                    "type": "string",
+                    "operator": "ilike",
+                    "defaultExpanded": true,
+                    "collapsible": true
+                },
+                {
+                    "fieldId": 7,
+                    "label": "Crosses Over",
+                    "attribute": "crosses_ov",
+                    "type": "string",
+                    "operator": "ilike",
                     "defaultExpanded": true,
                     "collapsible": true
                 }
