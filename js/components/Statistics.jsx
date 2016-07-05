@@ -36,6 +36,7 @@ const Statistics = React.createClass({
             selectedfeatures: 0,
             highlightedfeatures: 0,
             activeLayer: {
+                url: '',
                 statistics: [],
                 legend: {
                     height: 20,
