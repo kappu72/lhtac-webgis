@@ -33,7 +33,8 @@ module.exports = (plugins) => {
         advancedfilter: require('../reducers/advancedfilter'),
         ...pluginsReducers,
         draw: require('../reducers/draw'),
-        highlight: require('../reducers/highlight')
+        highlight: require('../reducers/highlight'),
+        stats: require('../reducers/stats')
 
     });
 

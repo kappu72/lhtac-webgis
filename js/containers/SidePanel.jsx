@@ -17,18 +17,23 @@ const {
     highlightStatus
 } = require('../../MapStore2/web/client/actions/highlight');
 const {featureSelectorReset} = require("../actions/featureselector");
+const {changeDownloadFormt, getNumberOfFeatures} = require("../actions/lhtac");
 const statisticsSelector = createSelector([
     lhtac,
     (state) => (state.featureselector.features.length),
-    (state) => (state.highlight.highlighted)],
-    (lhtacState, selectedfeatures, highlightedfeatures) => ({
+    (state) => (state.highlight.highlighted),
+    (state) => (state.stats || {})],
+    (lhtacState, selectedfeatures, highlightedfeatures, stats) => ({
         activeLayer: lhtacState.activeLayer,
         selectedfeatures,
-        highlightedfeatures
+        highlightedfeatures,
+        ...stats
     }));
 const Statistics = connect(statisticsSelector, {
     highlightStatus,
-    featureSelectorReset
+    featureSelectorReset,
+    changeDownloadFormt,
+    getNumberOfFeatures
 })(require("../components/Statistics"));
 
 const SidePanel = React.createClass({

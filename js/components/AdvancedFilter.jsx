@@ -85,16 +85,16 @@ const AdvancedFilter = React.createClass({
         return (this.props.loading) ? this.renderLoading() : this.renderFields();
     },
     setFilter() {
-        this.props.toggleFilter(true);
         let filter = this.props.baseCqlFilter + " AND " + FilterUtils.toCQLFilter({simpleFilterFields: this.props.fieldsConfig});
+        this.props.toggleFilter(true, filter);
         let params = {...this.props.params, cql_filter: filter};
-        this.props.changeLayerProperties(this.props.activeLayer.id, {params: params});
+        this.props.changeLayerProperties(this.props.activeLayer, {params: params}, this.props.baseCqlFilter);
 
     },
     removeFilter() {
         this.props.toggleFilter(false);
         let params = {...this.props.params, cql_filter: this.props.baseCqlFilter};
-        this.props.changeLayerProperties(this.props.activeLayer.id, {params: params});
+        this.props.changeLayerProperties(this.props.activeLayer, {params: params}, this.props.baseCqlFilter);
     }
 
 });

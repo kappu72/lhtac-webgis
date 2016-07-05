@@ -451,7 +451,8 @@
             "crossfilter" : {
                 "zoomBtn": "Zoom To Active Area Filter"
             },
-            "sideBtnTooltip": "Show Side Panel"
+            "sideBtnTooltip": "Show Side Panel",
+            "statsexcepiton": "Error during statistic update"
          }
      }
  }

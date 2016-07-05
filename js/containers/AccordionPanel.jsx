@@ -26,15 +26,13 @@ const {
 } = require('../../MapStore2/web/client/actions/queryform');
 
 const {
-    changeLayerProperties
-} = require('../../MapStore2/web/client/actions/layers');
-
-const {
     createFilterConfig,
     toggleFilter,
     setBaseCqlFilter
 } = require('../actions/advancedfilter');
-const {setActiveZone} = require('../actions/lhtac');
+const {setActiveZone,
+changeLhtacLayerFilter} = require('../actions/lhtac');
+
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,
     spatialField: state.queryform.spatialField,
@@ -70,7 +68,7 @@ const WMSCrossSelector = createSelector([
 const WMSCrossLayerFilter = connect( WMSCrossSelector, (dispatch) => {
     return {
         actions: bindActionCreators({
-            onQuery: changeLayerProperties,
+            onQuery: changeLhtacLayerFilter,
             onReset: resetZones,
             changeMapView,
             createFilterConfig,
@@ -98,7 +96,7 @@ const AdvancedFilterSelector = createSelector([
 
 const AdvancedFilter = connect(AdvancedFilterSelector, {
     simpleFilterFieldUpdate,
-    changeLayerProperties,
+    changeLayerProperties: changeLhtacLayerFilter,
     toggleFilter
 })(require('../components/AdvancedFilter'));
 

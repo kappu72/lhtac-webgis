@@ -72,7 +72,7 @@ function createFilterConfig(wpsPrams, url, filed) {
     return (dispatch) => {
         dispatch(newValuesRequst(reqId));
         return axios.post(url, wpsPrams, {
-            timeout: 10000,
+            timeout: 20000,
             headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
         }).then((response) => {
             let config = response.data;

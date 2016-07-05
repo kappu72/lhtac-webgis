@@ -70,6 +70,12 @@ function sidepanel(state = initialState, action) {
             let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
             return {...state, layoutUpdates: newLayout};
         }
+        case 'FEATURE_SELECTOR_RESET':
+        {
+            let newStyle = {...state.layoutUpdates.style, height: "100%"};
+            let newLayout = {...state.layoutUpdates, style: newStyle, resize: state.layoutUpdates.resize + 1};
+            return {...state, layoutUpdates: newLayout};
+        }
         default:
             return state;
     }

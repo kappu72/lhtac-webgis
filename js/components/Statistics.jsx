@@ -7,10 +7,13 @@
  */
 const React = require('react');
 
-const {Panel, PanelGroup, ListGroup, ListGroupItem, Button} = require('react-bootstrap');
+const {Panel, PanelGroup, ListGroup, ListGroupItem, Button, OverlayTrigger, Tooltip} = require('react-bootstrap');
 
+const Message = require('../../MapStore2/web/client/components/I18N/Message');
+
+const Spinner = require('react-spinkit');
 // const ConfigUtils = require('../../MapStore2/web/client/utils/ConfigUtils');
-
+const DownlodFormatSelector = require('./DownlodFormatSelector');
 const Legend = require('../../MapStore2/web/client/components/TOC/fragments/legend/Legend');
 
 const Statistics = React.createClass({
@@ -18,12 +21,18 @@ const Statistics = React.createClass({
         activeLayer: React.PropTypes.object,
         selectedfeatures: React.PropTypes.number,
         highlightedfeatures: React.PropTypes.number,
+        loading: React.PropTypes.bool,
         highlightStatus: React.PropTypes.func,
         featureSelectorReset: React.PropTypes.func,
-        height: React.PropTypes.number
+        changeDownloadFormt: React.PropTypes.func,
+        downloadFormat: React.PropTypes.string,
+        height: React.PropTypes.number,
+        getNumberOfFeatures: React.PropTypes.func
     },
     getDefaultProps() {
         return {
+            loading: false,
+            downloadFormat: "csv",
             selectedfeatures: 0,
             highlightedfeatures: 0,
             activeLayer: {
@@ -34,15 +43,30 @@ const Statistics = React.createClass({
                     options: ""
                 }
             },
-            changeDrawingStatus: () => {},
+            changeDownloadFormt: () => {},
             highlightStatus: () => {},
-            featureSelectorReset: () => {}
+            featureSelectorReset: () => {},
+            getNumberOfFeatures: () => {}
         };
     },
     getInitialState() {
         return { activeKey: '2'};
     },
+    componentDidMount() {
+        if (this.props.activeLayer.numberOfFeatures === undefined || this.props.activeLayer.numberOfFeatures === null) {
+            this.props.getNumberOfFeatures(this.props.activeLayer);
+        }
+    },
+    componentDidUpdate() {
+        if (this.props.activeLayer.numberOfFeatures === undefined || this.props.activeLayer.numberOfFeatures === null) {
+            this.props.getNumberOfFeatures(this.props.activeLayer);
+        }
+    },
     render() {
+        let wfsUrl = this.props.activeLayer.url.replace('wms', 'ows');
+        wfsUrl += "?service=WFS&request=getFeature&version=1.1.0";
+        wfsUrl += "&typeNames=" + this.props.activeLayer.name;
+        wfsUrl += "&outputFormat=" + this.props.downloadFormat;
         return (
             <div>
             <div style={{minHeight: this.props.height - 128}}>
@@ -51,14 +75,38 @@ const Statistics = React.createClass({
                 <Panel eventKey="1"
                 header="Download and statistics" collapsible>
                     <ListGroup className="lhtac-group-list">
-                        <ListGroupItem key={1}>Selected: {this.props.selectedfeatures}</ListGroupItem>
-                        <ListGroupItem key={2}>Highlighted: {this.props.highlightedfeatures}</ListGroupItem>
+                        <ListGroupItem key={1}>All: {this.props.activeLayer.numberOfFeatures}</ListGroupItem>
+                        <ListGroupItem key={2}>Selected: {this.props.selectedfeatures}</ListGroupItem>
+                        <ListGroupItem key={3}>Highlighted: {this.props.highlightedfeatures}</ListGroupItem>
                     </ListGroup>
+                    <div style={{ height: 60}}>
+                        <label>Select download format</label>
+                        <DownlodFormatSelector
+                            format={this.props.downloadFormat}
+                            onChange={this.props.changeDownloadFormt}
+                            />
+                    </div>
                     <ListGroup className="lhtac-group-list">
                         {
                             this.props.activeLayer.statistics.map((stat) => {
-                                return (
-                                    <ListGroupItem key={stat.id} href="#">{stat.name + " " + stat.value}</ListGroupItem>
+                                let link = (stat.value) ? {href: wfsUrl + "&cql_filter=" + stat.filter} : {};
+
+                                return stat.excepiton ? (
+                                    <OverlayTrigger placement="bottom" overlay={(<Tooltip id={"stat-" + stat.id + "-tooltip"}><Message msgId="lhtac.statsexcepiton"/></Tooltip>)}>
+                                        <ListGroupItem
+                                        style={{color: "red"}}
+                                        key={stat.id}
+                                        >
+                                            {stat.name}
+                                        </ListGroupItem>
+                                    </OverlayTrigger>
+                                ) : (
+                                    <ListGroupItem
+                                    key={stat.id}
+                                    style={(stat.value) ? {color: "blue"} : {}}
+                                    {...link} download>
+                                        {this.props.loading ? (<div><span>{stat.name}</span><div style={{"float": "right"}}><Spinner spinnerName="circle" noFadeIn/></div></div>) : (stat.name + " " + stat.value)}
+                                    </ListGroupItem>
                                 );
                             })
                         }

@@ -88,16 +88,22 @@
         "statistics": [
             {
                 "id": 1,
-                "name": "Locale and State Crashes:",
-                "value": 0
-            }, {
+                "name": "All Crashes in selected area(s):",
+                "value": 0,
+                "type": "areaFilter"
+            },
+            {
                 "id": 2,
-                "name": "Local Crashes in Jurisdiction:",
-                "value": 0
-            }, {
+                "name": "Local Crashes in selected area(s):",
+                "value": 0,
+                "type": "areaFilter",
+                "custom_cql": " AND (highway_system='local')"
+            },
+            {
                 "id": 3,
-                "name": "Shown on map:",
-                "value": 0
+                "name": "Shown on map (filtered):",
+                "value": 0,
+                "type": "allFilter"
             }
         ],
         "columnDefs": [
@@ -163,6 +169,7 @@
                     "attribute": "highway_system",
                     "multivalue": true,
                     "type": "list",
+                    "operator": "=",
                     "optionsLabels": {
                         "local": "Local",
                         "state": "State"
@@ -178,6 +185,7 @@
                     "label": "Accident Severity",
                     "attribute": "severity",
                     "multivalue": true,
+                    "operator": "=",
                     "toolbar": true,
                     "sort": "ASC",
                     "type": "list",
@@ -191,6 +199,8 @@
                     "checkboxStyle": {"width": 63},
                     "attribute": "accident_year",
                     "multivalue": true,
+                    "type": "list",
+                    "operator": "=",
                     "toolbar": true,
                     "required": true,
                     "sort": "ASC",
@@ -206,6 +216,7 @@
                     "required": true,
                     "sort": "ASC",
                     "type": "list",
+                    "operator": "=",
                     "toolbar": true,
                     "defaultExpanded": true,
                     "collapsible": true,
@@ -216,6 +227,7 @@
                     "label": "Intersection Related?",
                     "attribute": "intersection_related",
                     "type": "list",
+                    "operator": "=",
                     "multivalue": true,
                     "required": true,
                     "optionsLabels": {
@@ -231,6 +243,7 @@
                     "label": "Lane Departure?",
                     "attribute": "lane_dep",
                     "type": "list",
+                    "operator": "=",
                     "multivalue": true,
                     "required": true,
                     "optionsLabels": {
@@ -246,6 +259,7 @@
                     "fieldId": 7,
                     "label": "Direction of Travel",
                     "type": "list",
+                    "operator": "=",
                     "attribute": "direction_of_travel",
                     "checkboxStyle": {"width": 53},
                     "multivalue": true,
@@ -261,6 +275,7 @@
                 {
                     "fieldId": 8,
                     "type": "list",
+                    "operator": "=",
                     "checkboxStyle": {"width": 115},
                     "label": "First Harmful Event",
                     "attribute": "first_harmful_event",
@@ -335,15 +350,19 @@
             {
                 "id": 1,
                 "name": "All bridges in selected area(s):",
-                "value": 4204
+                "value": 0,
+                "type": "areaFilter"
             }, {
                 "id": 2,
                 "name": "Local bridges in selected area(s):",
-                "value": 2375
+                "value": 0,
+                "type": "areaFilter",
+                "custom_cql": " AND (highway_sy='local')"
             }, {
                 "id": 3,
                 "name": "Shown on map (filtered):",
-                "value": 4204
+                "value": 0,
+                "type": "allFilter"
             }
         ],
         "advancedFilter": {
@@ -353,6 +372,7 @@
             "fieldsConfig": [
                 {
                     "fieldId": 1,
+                    "operator": "=",
                     "label": "Highway System",
                     "attribute": "highway_sy",
                     "multivalue": true,
@@ -370,6 +390,7 @@
                     "fieldId": 2,
                     "type": "list",
                     "label": "Deficiency",
+                    "operator": "=",
                     "attribute": "deficiency",
                     "checkboxStyle": {"width": 180},
                     "maxLabelSize": 30,
