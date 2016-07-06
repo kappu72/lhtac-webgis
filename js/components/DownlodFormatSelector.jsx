@@ -20,7 +20,7 @@ const DownlodFormatSelector = React.createClass({
     },
     getDefaultProps() {
         return {
-            formatOptions: [{name: "CSV", value: "csv"}, {name: "Shapefile", value: "shape-zip"}, {name: "FileGDB", value: "application/filegdb"}, {name: "Geo Package", value: "application/gpkg"}],
+            formatOptions: [{name: "CSV", value: "csv"}, {name: "Shapefile", value: "shape-zip"}, {name: "FileGDB", value: "application/filegdb"}, {name: "Geo Package", value: "gpkg"}],
             onChange: () => {}
         };
     },

@@ -64,7 +64,7 @@ function changeLhtacLayerFilter(layer, properties, areaFilter) {
                     p = {params: {...params, cql_filter: customCql.length > 0 ? customCql : "INCLUDE"}};
                 }
             }
-            if (p.params.cql_filter !== stat.filter && !stat.esception !== false) {
+            if (p.params.cql_filter !== stat.filter || stat.exception !== false) {
                 arr.push(axios.get(url, p, {
                     timeout: 15000,
                     headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
@@ -121,8 +121,7 @@ function getNumberOfFeatures(layer) {
     };
 }
 
-
-function changeDownloadFormt(format) {
+function changeDownloadFormat(format) {
     return {
         type: CHANGE_DOWNLOAD_FORMAT,
         format
@@ -138,6 +137,6 @@ module.exports = {
     changeLhtacLayerFilter,
     switchLayer,
     setActiveZone,
-    changeDownloadFormt,
+    changeDownloadFormat,
     getNumberOfFeatures
 };

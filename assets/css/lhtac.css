@@ -257,3 +257,6 @@
     color: green;
 
 }
+.ag-header-cell-label {
+    white-space: normal;
+}

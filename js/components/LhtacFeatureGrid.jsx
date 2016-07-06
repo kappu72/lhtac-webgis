@@ -52,6 +52,7 @@ const LhtacFeatureGrid = React.createClass({
                 enableZoomToFeature={false}
                 columnDefs={this.props.activeLayer.columnDefs}
                 excludeFields={this.props.activeLayer.excludeFields}
+                agGridOptions={{headerHeight: 48}}
                 toolbar={{zoom: false, exporter: false, toolPanel: false}}
             />
             ) : null;

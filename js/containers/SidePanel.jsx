@@ -17,7 +17,7 @@ const {
     highlightStatus
 } = require('../../MapStore2/web/client/actions/highlight');
 const {featureSelectorReset} = require("../actions/featureselector");
-const {changeDownloadFormt, getNumberOfFeatures} = require("../actions/lhtac");
+const {changeDownloadFormat, getNumberOfFeatures} = require("../actions/lhtac");
 const statisticsSelector = createSelector([
     lhtac,
     (state) => (state.featureselector.features.length),
@@ -32,7 +32,7 @@ const statisticsSelector = createSelector([
 const Statistics = connect(statisticsSelector, {
     highlightStatus,
     featureSelectorReset,
-    changeDownloadFormt,
+    changeDownloadFormat,
     getNumberOfFeatures
 })(require("../components/Statistics"));
 

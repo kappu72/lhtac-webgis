@@ -34,7 +34,7 @@ function valuesLoadError(reqId, error) {
         error
     };
 }
-function createSimpleFilterField(field, options) {
+function createSimpleFilterField(field, options, reqTime) {
     let fieldConf = field;
     let optionsValues = Array.isArray(options) ? options : [options];
     if (field.type === 'list') {
@@ -64,13 +64,15 @@ function createSimpleFilterField(field, options) {
     }else if (field.type === "string") {
         fieldConf = {...fieldConf, values: null};
     }
-    return addSimpleFilterField(fieldConf);
+    fieldConf.updateTime = reqTime;
+    return addSimpleFilterField(fieldConf, reqTime);
 }
 
 function createFilterConfig(wpsPrams, url, filed) {
     const reqId = uuid.v1();
     return (dispatch) => {
         dispatch(newValuesRequst(reqId));
+        let reqTime = new Date().getTime();
         return axios.post(url, wpsPrams, {
             timeout: 20000,
             headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
@@ -79,7 +81,7 @@ function createFilterConfig(wpsPrams, url, filed) {
             if (typeof config !== "object") {
                 try {
                     config = JSON.parse(config);
-                    dispatch(createSimpleFilterField(filed, config.values));
+                    dispatch(createSimpleFilterField(filed, config.values, reqTime));
                     dispatch(valuesLoaded(reqId));
                 } catch(e) {
                     dispatch(valuesLoadError(reqId, 'Failed Loading fields Values'));

@@ -24,7 +24,7 @@ const Statistics = React.createClass({
         loading: React.PropTypes.bool,
         highlightStatus: React.PropTypes.func,
         featureSelectorReset: React.PropTypes.func,
-        changeDownloadFormt: React.PropTypes.func,
+        changeDownloadFormat: React.PropTypes.func,
         downloadFormat: React.PropTypes.string,
         height: React.PropTypes.number,
         getNumberOfFeatures: React.PropTypes.func
@@ -44,7 +44,7 @@ const Statistics = React.createClass({
                     options: ""
                 }
             },
-            changeDownloadFormt: () => {},
+            changeDownloadFormat: () => {},
             highlightStatus: () => {},
             featureSelectorReset: () => {},
             getNumberOfFeatures: () => {}
@@ -81,10 +81,10 @@ const Statistics = React.createClass({
                         <ListGroupItem key={3}>Highlighted: {this.props.highlightedfeatures}</ListGroupItem>
                     </ListGroup>
                     <div style={{ height: 60}}>
-                        <label>Select download format</label>
+                        <label><Message msgId="lhtac.downloadFormatLabel"/></label>
                         <DownlodFormatSelector
                             format={this.props.downloadFormat}
-                            onChange={this.props.changeDownloadFormt}
+                            onChange={this.props.changeDownloadFormat}
                             />
                     </div>
                     <ListGroup className="lhtac-group-list">
@@ -93,11 +93,13 @@ const Statistics = React.createClass({
                                 let link = (stat.value) ? {href: wfsUrl + "&cql_filter=" + stat.filter} : {};
 
                                 return stat.excepiton ? (
-                                    <OverlayTrigger placement="bottom" overlay={(<Tooltip id={"stat-" + stat.id + "-tooltip"}><Message msgId="lhtac.statsexcepiton"/></Tooltip>)}>
-                                        <ListGroupItem
-                                        style={{color: "red"}}
+                                    <OverlayTrigger
                                         key={stat.id}
-                                        >
+                                        placement="bottom"
+                                        overlay={(<Tooltip id={"stat-" + stat.id + "-tooltip"}><Message msgId="lhtac.statsexcepiton"/></Tooltip>)}>
+                                            <ListGroupItem
+                                            style={{color: "red"}}
+                                            >
                                             {stat.name}
                                         </ListGroupItem>
                                     </OverlayTrigger>

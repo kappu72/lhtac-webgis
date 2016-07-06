@@ -152,6 +152,25 @@ function queryform(state, action) {
         case 'ZONE_CHANGE': {
             return zoneChange(state, action);
         }
+        case 'ADD_SIMPLE_FILTER_FIELD': {
+            let simpleFilterFields = state.simpleFilterFields || [];
+            let newSimpleFilterFields;
+            const field = ( action.properties.fieldId) ? action.properties : {...action.properties, fieldId: new Date().getUTCMilliseconds()};
+            let idx = simpleFilterFields.findIndex((f) => (f.fieldId === field.fieldId));
+            if (idx === -1) {
+                newSimpleFilterFields = [...simpleFilterFields, field];
+            }else {
+                newSimpleFilterFields = simpleFilterFields.map((f) => {
+                    let newf = f;
+                    if (f.fieldId === field.fieldId) {
+                        newf = field.updateTime > f.updateTime ? field : f;
+                    }
+                    return newf;
+
+                });
+            }
+            return {...state, simpleFilterFields: newSimpleFilterFields};
+        }
         default:
             return msQueryform(state, action);
     }

@@ -89,7 +89,6 @@ const WMSCrossLayerFilter = React.createClass({
     search() {
 
         let filter = LhtacFilterUtils.getZoneCrossFilter(this.props.spatialField);
-        this.props.actions.setBaseCqlFilter(filter);
 
         let params = assign({}, this.props.params, {cql_filter: filter});
         this.props.actions.onQuery(this.props.activeLayer, {params: params}, filter);
@@ -119,6 +118,7 @@ const WMSCrossLayerFilter = React.createClass({
             }];
             this.props.actions.changeMapView(...this.zoomArgs, this.props.mapConfig.present.size, null, this.props.mapConfig.present.projection);
         }
+        this.props.actions.setBaseCqlFilter(filter);
     },
     reset() {
         this.zoomArgs = null;
