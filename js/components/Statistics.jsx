@@ -69,7 +69,7 @@ const Statistics = React.createClass({
         wfsUrl += "&typeNames=" + this.props.activeLayer.name;
         wfsUrl += "&outputFormat=" + this.props.downloadFormat;
         if ( this.props.downloadFormat === 'OGR-GPKG') {
-            wfsUrl += "&filename=" + this.props.activeLayer.title + ".geo";
+            wfsUrl += "&filename=" + this.props.activeLayer.title + ".gpkg";
         }
         return (
             <div>
