@@ -14,7 +14,7 @@ const STATS_LOADING = 'STATS_LOADING';
 const CHANGE_DOWNLOAD_FORMAT = 'CHANGE_DOWNLOAD_FORMAT';
 
 const {changeLayerProperties} = require('../../MapStore2/web/client/actions/layers');
-
+const {zoneSearchError, zoneFilter, zoneSearch} = require('../../MapStore2/web/client/actions/queryform');
 function switchLayer(layer) {
     return {
         type: SWITCH_LAYER,
@@ -128,6 +128,29 @@ function changeDownloadFormat(format) {
     };
 
 }
+
+function zoneGetValues(url, filter, id) {
+    return (dispatch) => {
+        return axios.post(url, filter, {
+            timeout: 20000,
+            headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
+        }).then((response) => {
+            let config = response.data;
+            if (typeof config !== "object") {
+                try {
+                    config = JSON.parse(config);
+                } catch(e) {
+                    dispatch(zoneSearchError('Search result broken (' + url + ":   " + filter + '): ' + e.message, id));
+                }
+            }
+
+            dispatch(zoneFilter(config, id));
+            dispatch(zoneSearch(false, id));
+        }).catch((e) => {
+            dispatch(zoneSearchError(e, id));
+        });
+    };
+}
 module.exports = {
     SWITCH_LAYER,
     SET_ACTIVE_ZONE,
@@ -138,5 +161,6 @@ module.exports = {
     switchLayer,
     setActiveZone,
     changeDownloadFormat,
-    getNumberOfFeatures
+    getNumberOfFeatures,
+    zoneGetValues
 };

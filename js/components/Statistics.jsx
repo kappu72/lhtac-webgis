@@ -68,6 +68,9 @@ const Statistics = React.createClass({
         wfsUrl += "?service=WFS&request=getFeature&version=1.1.0";
         wfsUrl += "&typeNames=" + this.props.activeLayer.name;
         wfsUrl += "&outputFormat=" + this.props.downloadFormat;
+        if ( this.props.downloadFormat === 'OGR-GPKG') {
+            wfsUrl += "&filename=" + this.props.activeLayer.title + ".geo";
+        }
         return (
             <div>
             <div style={{minHeight: this.props.height - 128}}>

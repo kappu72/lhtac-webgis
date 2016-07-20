@@ -40,7 +40,7 @@ const queryFormConfig = {
                 label: "Road Jurisdiction",
                 values: [],
                 value: null,
-                valueField: "properties.juris_code",
+                valueField: "properties.lhj2014_id",
                 textField: "properties.name2",
                 searchText: "*",
                 searchMethod: "ilike",

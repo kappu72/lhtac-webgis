@@ -690,6 +690,7 @@
             {
                 "type": "vector",
                 "name": "Selected items",
+                "queryable": false,
                 "id": "featureselector",
                 "features": [],
                 "crs": "EPSG:4326",

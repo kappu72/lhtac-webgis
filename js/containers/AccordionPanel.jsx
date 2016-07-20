@@ -16,7 +16,6 @@ const {bindActionCreators} = require('redux');
 
 const {
     removeSpatialSelection,
-    zoneGetValues,
     zoneSearch,
     // openMenu,
     zoneChange,
@@ -30,8 +29,11 @@ const {
     toggleFilter,
     setBaseCqlFilter
 } = require('../actions/advancedfilter');
-const {setActiveZone,
-changeLhtacLayerFilter} = require('../actions/lhtac');
+const {
+    setActiveZone,
+    changeLhtacLayerFilter,
+    zoneGetValues
+    } = require('../actions/lhtac');
 
 const SpatialFilter = connect((state) => ({
     useMapProjection: state.queryform.useMapProjection,

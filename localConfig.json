@@ -21,7 +21,12 @@
 					}
 				}
 			}
-		},"Identify", {
+		},{
+			"name": "Identify",
+			"cfg": {
+				"excludeOptions": ["legend", "statistics", "columnDefs", "advancedFilter"]
+			}
+		}, {
 				"name": "Locate",
 				"hide": true
 		}, {
