@@ -304,3 +304,9 @@ body{
 #lhtacswitch button:first-child{
     width: 130px;
 }
+#mapstore-getfeatureinfo .info-wrap{
+    overflow:auto;
+}
+#mapstore-getfeatureinfo pre{
+    max-height: 250px;
+}

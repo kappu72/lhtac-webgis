@@ -49,9 +49,6 @@
                     "viewerOptions": {
                         "collapsible": false,
                         "container": "{context.ReactSwipe}",
-                        "containerProps": {
-                            "continuous": false
-                        },
                         "header": "{context.SwipeHeader}",
                         "headerOptions": {
                             "useButtons": true
@@ -310,5 +307,5 @@
     },
     "printUrl": "http://demo.geo-solutions.it/geoserver/pdf/info.json",
     "proxyUrl": "/lhtac-webgis/proxy/?url=",
-    "translationsPath": "MapStore2/web/client/translations"
+    "translationsPath": "translations"
 }

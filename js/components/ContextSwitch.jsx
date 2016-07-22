@@ -46,6 +46,7 @@ const ContextSwitch = React.createClass({
                 <label>Switch context layer</label>
                 <br/>
                 <SplitButton
+                    id="lhtacswitchButton"
                     title={this.props.activeLayer.title}
                     pullRight={false}
                     dropup={this.props.dropup}
