@@ -301,3 +301,6 @@ body{
 #lhtacswitch button{
     font-size: 14px;
 }
+#lhtacswitch button:first-child{
+    width: 130px;
+}
