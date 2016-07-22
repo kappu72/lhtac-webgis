@@ -1,105 +1,314 @@
 {
-	"proxyUrl": "/lhtac-webgis/proxy/?url=",
-	"geoStoreUrl": "/lhtac-webgis/rest/geostore",
-	"translationsPath": "MapStore2/web/client/translations",
-	"printUrl": "http://demo.geo-solutions.it/geoserver/pdf/info.json",
-	"geoserverUrl": "http://demo.geo-solutions.it/geoserver/wms",
-	"plugins": {
-		"desktop": [{
-			"name": "Map",
-			"cfg": {
-				"tools": ["measurement", "locate", "overview", "scalebar", "draw", "highlight"],
-				"toolsOptions": {
-					"scalebar": {
-						"leaflet": {
-							"metric": false,
-							"imperial": true
-						},
-						"openlayers": {
-							"units": "imperial"
-						}
-					}
-				}
-			}
-		},{
-			"name": "Identify",
-			"cfg": {
-				"excludeOptions": ["legend", "statistics", "columnDefs", "advancedFilter"]
-			}
-		}, {
-				"name": "Locate",
-				"hide": true
-		}, {
-				"name": "TOC",
-				"hide": true
-		}, {
-				"name": "BackgroundSwitcher",
-				"hide": true
-		}, {
-				"name": "Measure",
-				"hide": true,
-				"cfg": {
-					"uom": {
-						"length": {"unit": "mi", "label": "mi"},
-						"area": {"unit": "sqmi", "label": "square mi"}
-					}
-				}
-		}, {
-				"name": "Print",
-				"hide": true,
-				"cfg": {
-					"useFixedScales": false,
-					"syncMapPreview": true,
-					"mapPreviewOptions": {
-						"enableScalebox": false,
-						"enableRefresh": false
-					}
-				}
-		}, {
-				"name": "Settings",
-				"hide": true
-		}, {
-				"name": "About",
-				"hide": true,
-				"cfg": {
-					"textContent": "The nationwide Highway Safety Improvement Program (HSIP) was established under the SAFTEA-LU Federal Transportation Act and continues in MAP-21. Local highway jurisdictions are allocated a portion of those funds (Local HSIP). Proposed LHSIP projects must directly address specific safety issues, based on data analysis. This web application, provided by the Local Highway Technical Assistance Council (LHTAC), is designed to help meet those requirements by making statewide crash data from ITD's Office of Highway Safety easily accessible to all local jurisdictions. Crash data is acquired annually from the ITD Office of Highway Safety. While reasonable efforts have been made to ensure accuracy of the presented information, LHTAC cannot guarantee that all data and map layers will be accurate, error free, or suitable for any specific purpose. Displayed crash locations indicate the approximate vicinity of a crash, based on reported descriptions. Minute details, such as actual lane of travel or point of impact, cannot be implied or inferred from the map. Use this information at your own risk. Any presented base layer(s) of the map are not created nor controlled by LHTAC nor ITD. Inaccuracies and corrections are the responsibility of the base layer provider. They are presented in this mapping application as a reference, without guarantee of their suitability for any specific purpose. Map data layers may not correspond exactly with the base layers in terms of object placement, such as crash location on displayed roads."
-				}
-		}, {
-				"name": "ContactUs",
-				"hide": true,
-				"cfg": {
-					"textContent": [
-							{"id": 1, "text": "For questions regarding LHSIP in Idaho, please contact Laila Kral: LKral@Lhtac.org."},
-							{"id": 2, "text": "For questions regarding this crash or Bridge data tool, please contact: webmaster@lhtac.org."}
-					]
-				}
-		}, {
-				"name": "Toolbar",
-				"cfg": {
-					"panelStyle": {
-             		 "minWidth": "300px",
-              		"right": "52px",
-              		"zIndex": 1000,
-              "position": "absolute",
-              "overflow": "auto"
-          }
-				}
-		}, {
-				"name": "ContextSwitch",
-				"hide": true
-		}, {
-			"name": "MousePosition",
-			"cfg": {
-					"copyToClipboardEnabled": true
-				}
-			}, "Search", "ScaleBox", {
-    			"name": "ZoomToMaxExtent",
-    			"cfg": {
-    				"tooltipPlace": "right"
-    			},
-    			"hideFrom": ["Toolbar"]
-				}, {"name": "MapLoading",
-				"hideFrom": ["Toolbar"]
-			}, "Snapshot", "FeatureSelector"]
-	}
+    "geoStoreUrl": "/lhtac-webgis/rest/geostore",
+    "geoserverUrl": "http://demo.geo-solutions.it/geoserver/wms",
+    "plugins": {
+        "desktop": [
+            {
+                "cfg": {
+                    "tools": [
+                        "measurement",
+                        "locate",
+                        "overview",
+                        "scalebar",
+                        "draw",
+                        "highlight"
+                    ],
+                    "toolsOptions": {
+                        "scalebar": {
+                            "leaflet": {
+                                "imperial": true,
+                                "metric": false,
+                                "position": "bottomright"
+                            },
+                            "openlayers": {
+                                "units": "imperial"
+                            }
+                        }
+                    },
+                    "zoomControl": false
+                },
+                "name": "Map"
+            },
+            {
+                "cfg": {
+                	"excludeOptions": [
+                        "legend",
+                        "statistics",
+                        "columnDefs",
+                        "advancedFilter"
+                    ],
+                    "asPanel": false,
+                    "bodyClassName": "modal-body info-wrap",
+                    "className": "square-button",
+                    "closeGlyph": "1-close",
+                    "enableRevGeocode": true,
+                    "glyph": "map-marker",
+                    "headerClassName": "modal-header",
+                    "headerGlyph": "",
+                    "panelClassName": "modal-dialog info-panel modal-content",
+                    "viewerOptions": {
+                        "collapsible": false,
+                        "container": "{context.ReactSwipe}",
+                        "containerProps": {
+                            "continuous": false
+                        },
+                        "header": "{context.SwipeHeader}",
+                        "headerOptions": {
+                            "useButtons": true
+                        }
+                    },
+                    "wrapRevGeocode": false
+                },
+                "name": "Identify",
+                "showIn": [
+                    "IdentifyBar",
+                    "Settings"
+                ]
+            },
+            "ScaleBox",
+            {
+                "cfg": {
+                    "className": "square-button"
+                },
+                "override": {
+                    "Toolbar": {
+                        "position": 7,
+                        "priority": 3,
+                        "alwaysVisible": true
+                    }
+                },
+                "name": "ZoomAll"
+            },
+            {
+                "cfg": {
+                    "buttonStyle": "primary",
+                    "id": "identifyBar",
+                    "pressedButtonStyle": "success"
+                },
+                "id": "IdentifyBar",
+                "isDefault": false,
+                "name": "Toolbar",
+                "stateSelector": "identify"
+            },
+            {
+                "cfg": {
+                    "btnConfig": {
+                        "className": "square-button"
+                    },
+                    "glyph": "1-position-1"
+                },
+                "name": "Locate",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "hideFrom": [
+                    "DrawerMenu"
+                ],
+                "name": "TOC"
+            },
+            {
+                "cfg": {
+                    "buttonStyle": "primary",
+                    "closeGlyph": "1-close",
+                    "wrap": false,
+                    "wrapWithPanel": false
+                },
+                "hideFrom": [
+                    "DrawerMenu"
+                ],
+
+                "override": {
+                    "Toolbar": {
+                        "position": 7
+                    }
+                },
+                "name": "BackgroundSwitcher"
+            },
+            {
+                "cfg": {
+                    "areaGlyph": "1-measure-area",
+                    "bearingGlyph": "1-bearing",
+                    "lineGlyph": "1-measure-lenght",
+                    "showResults": true,
+                    "useButtonGroup": false,
+                    "uom": {
+                        "area": {
+                            "label": "square mi",
+                            "unit": "sqmi"
+                        },
+                        "length": {
+                            "label": "mi",
+                            "unit": "mi"
+                        }
+                    }
+                },
+                "name": "Measure"
+            },
+            {
+                "cfg": {
+                    "closeGlyph": "1-close",
+                    "mapPreviewOptions": {
+                        "enableRefresh": false,
+                        "enableScalebox": false
+                    },
+                    "previewOptions": {
+                        "buttonStyle": "primary"
+                    },
+                    "submitConfig": {
+                        "buttonConfig": {
+                            "bsSize": "medium",
+                            "bsStyle": "primary"
+                        },
+                        "glyph": ""
+                    },
+                    "syncMapPreview": true,
+                    "useFixedScales": false,
+                    "withPanelAsContainer": false
+                },
+                "name": "Print"
+            },
+            {
+                "cfg": {
+                    "className": "ms2-loading",
+                    "buttonConfig": {
+                            "bsStyle": "primary"
+                        }
+                },
+                "name": "MapLoading",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            "OmniBar",
+            {
+                "name": "BurgerMenu"
+            },
+            {
+                "cfg": {
+                    "className": "square-button"
+                },
+                "name": "Expander"
+            },
+            {
+                "cfg": {
+                    "closeGlyph": "1-close",
+                    "overrideSettings": {
+                        "history": false
+                    },
+                    "wrap": true,
+                    "wrapWithPanel": false
+                },
+                "hideFrom": [
+                    "DrawerMenu"
+                ],
+                "name": "Settings"
+            },
+            {
+                "cfg": {
+                    "textContent": "The nationwide Highway Safety Improvement Program (HSIP) was established under the SAFTEA-LU Federal Transportation Act and continues in MAP-21. Local highway jurisdictions are allocated a portion of those funds (Local HSIP). Proposed LHSIP projects must directly address specific safety issues, based on data analysis. This web application, provided by the Local Highway Technical Assistance Council (LHTAC), is designed to help meet those requirements by making statewide crash data from ITD's Office of Highway Safety easily accessible to all local jurisdictions. Crash data is acquired annually from the ITD Office of Highway Safety. While reasonable efforts have been made to ensure accuracy of the presented information, LHTAC cannot guarantee that all data and map layers will be accurate, error free, or suitable for any specific purpose. Displayed crash locations indicate the approximate vicinity of a crash, based on reported descriptions. Minute details, such as actual lane of travel or point of impact, cannot be implied or inferred from the map. Use this information at your own risk. Any presented base layer(s) of the map are not created nor controlled by LHTAC nor ITD. Inaccuracies and corrections are the responsibility of the base layer provider. They are presented in this mapping application as a reference, without guarantee of their suitability for any specific purpose. Map data layers may not correspond exactly with the base layers in terms of object placement, such as crash location on displayed roads."
+                },
+                "hide": true,
+                "name": "About"
+            },
+			{
+                "cfg": {
+                    "withToggle": [
+                        "max-width: 768px",
+                        "min-width: 768px"
+                    ]
+                },
+                "name": "Search"
+            },
+            {
+                "cfg": {
+                    "textContent": [
+                        {
+                            "id": 1,
+                            "text": "For questions regarding LHSIP in Idaho, please contact Laila Kral: LKral@Lhtac.org."
+                        },
+                        {
+                            "id": 2,
+                            "text": "For questions regarding this crash or Bridge data tool, please contact: webmaster@lhtac.org."
+                        }
+                    ]
+                },
+                "hide": true,
+                "name": "ContactUs"
+            },
+            {
+      "name": "Toolbar",
+      "id": "NavigationBar",
+      "stateSelector": "toolbar",
+      "cfg": {
+				"buttonStyle": "primary",
+        "id": "navigationBar"
+      }
+    },
+            {
+                "hide": true,
+                "name": "ContextSwitch"
+            },
+            {
+                "cfg": {
+                    "copyToClipboardEnabled": true
+                },
+                "name": "MousePosition"
+            },
+            {
+                "cfg": {
+                    "buttonStyle": "primary",
+                    "closeGlyph": "1-close",
+                    "wrap": true,
+                    "wrapWithPanel": false
+                },
+                "name": "Snapshot"
+            },
+            "FeatureSelector",
+            {
+                "cfg": {
+                    "btnConfig": {
+                        "className": "square-button"
+                    },
+                    "buttonStyle": "primary",
+                    "glyph": "1-screen-backward"
+                },
+                "name": "Undo"
+            },
+            {
+                "cfg": {
+                    "btnConfig": {
+                        "className": "square-button"
+                    },
+                    "buttonStyle": "primary",
+                    "glyph": "1-screen-forward"
+                },
+                "name": "Redo"
+            },
+            {
+                "name": "ZoomIn",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomOut",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            }
+        ]
+    },
+    "printUrl": "http://demo.geo-solutions.it/geoserver/pdf/info.json",
+    "proxyUrl": "/lhtac-webgis/proxy/?url=",
+    "translationsPath": "MapStore2/web/client/translations"
 }

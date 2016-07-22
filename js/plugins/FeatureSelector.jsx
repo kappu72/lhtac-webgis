@@ -34,6 +34,7 @@ const lhtac = require('../selectors/lhtac');
 
 const FeatureSelector = React.createClass({
     propTypes: {
+        sidePanelExpanded: React.PropTypes.bool,
         bboxGlyph: React.PropTypes.string,
         polyGlyph: React.PropTypes.string,
         drawFeatures: React.PropTypes.bool,
@@ -150,7 +151,9 @@ const FeatureSelector = React.createClass({
     },
     render() {
         return this.props.open ? (
-            <div id="feature-selection-bar" onKeyDown={this.keyDown}>
+            <div id="feature-selection-bar"
+                className={this.props.sidePanelExpanded ? "default" : "side-expanded"}
+                onKeyDown={this.keyDown}>
                     {(this.props.request.state === 'loading') ? (
                        <div className="selector-spinner">
                             <Spinner spinnerName="wordpress" noFadeIn/>
@@ -200,15 +203,17 @@ const selector = createSelector([
     (state) => (state.featureselector || {}),
     (state) => (state.queryform || {}),
     (state) => (state.highlight && state.highlight.status || 'disabled'),
-    (state) => (state.advancedfilter || {})
-], (lhtacState, draw, featureselector, queryform, hstatus, advancedfilter) => ({
+    (state) => (state.advancedfilter || {}),
+    (state) => (state.sidepanel)
+], (lhtacState, draw, featureselector, queryform, hstatus, advancedfilter, sidepanel) => ({
     activeLayer: lhtacState.activeLayer,
     open: lhtacState.filterActive,
     ...draw,
     ...featureselector,
     queryform,
     hstatus,
-    advancedFilterStatus: advancedfilter.filterstatus
+    advancedFilterStatus: advancedfilter.filterstatus,
+    sidePanelExpanded: sidepanel.expanded
 }));
 
 const FeatureSelectorPlugin = connect(selector, {

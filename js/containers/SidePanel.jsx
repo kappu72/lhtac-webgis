@@ -79,8 +79,8 @@ const SidePanel = React.createClass({
                 <div id="lhac-sidepanel" style={panelStyle}>
                     <div className="header">
 
-                        <span className="close" onClick={this.toggle}>×</span>
-                        <span className="pin" style={pinStyle} onClick={this.pin}><Glyphicon glyph="pushpin"/></span>
+                        <span style={{position: "relative", top: "-13px"}}className="close" onClick={this.toggle}>×</span>
+                        <span className="pin" style={pinStyle} onClick={this.pin}><Glyphicon style={{fontSize: "22px", position: "relative", top: "-5px", right: "-5px"}} glyph="pushpin"/></span>
                     </div>
                     <div className="body" style={{overflowY: "hidden"}} >
                         <div style={{height: accHeight, overflowY: "auto"}}>

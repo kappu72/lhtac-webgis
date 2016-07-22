@@ -9,14 +9,16 @@ const React = require('react');
 
 const {connect} = require('react-redux');
 const {createSelector} = require('reselect');
-const assign = require('object-assign');
 
 const ConfigUtils = require('../../MapStore2/web/client/utils/ConfigUtils');
-const PluginsUtils = require('../../MapStore2/web/client/utils/PluginsUtils');
 
 const {resetControls} = require('../../MapStore2/web/client/actions/controls');
 
 const {toggleSidePanel, pinSidePanel, resizeHeight} = require("../actions/sidepanel");
+
+const PluginsContainer = connect((state) => ({
+    pluginsState: state && state.controls || {}
+}))(require('../../MapStore2/web/client/components/plugins/PluginsContainer'));
 
 const SidePanel = connect((state) => ({
     expanded: state.sidepanel.expanded,
@@ -44,6 +46,7 @@ const selector = createSelector([layersSelector, (state) => (state.sidepanel.exp
 const SidePanelBtn = connect(selector, {
     toggleSidePanel
 })(require('../components/SidePanelBtn'));
+
 const MapViewer = React.createClass({
     propTypes: {
         mode: React.PropTypes.string,
@@ -72,32 +75,30 @@ const MapViewer = React.createClass({
 
         };
     },
-    getPluginDescriptor(plugin) {
-        return PluginsUtils.getPluginDescriptor(this.props.plugins,
-                this.props.pluginsConfig[this.props.mode], plugin);
-    },
-    renderPlugins(plugins) {
-        return plugins
-            .filter((Plugin) => !Plugin.hide)
-            .map(this.getPluginDescriptor)
-            .map((Plugin) => {
+    componentWillReceiveProps(nextProps) {
+        this.pluginsConfig = {};
+        this.pluginsConfig[nextProps.mode] = nextProps.pluginsConfig[nextProps.mode].map((Plugin) => {
+            let newPlug = Plugin;
+            if (Plugin.name === "Map") {
                 let config = Plugin.cfg;
-                let params = assign({}, this.props.params, {mapType: this.props.mapType});
-                if (Plugin.name === "Map") {
-                    config = assign({}, config, {options: {resize: this.props.layoutUpdates.resize}});
-                }
-
-                return <Plugin.impl key={Plugin.name} {...params} {...config} items={Plugin.items}/>;
-            });
+                config = {...config, options: {resize: nextProps.layoutUpdates.resize}};
+                newPlug = {...Plugin, cfg: config};
+            }
+            return newPlug;
+        });
     },
     render() {
         if (this.props.pluginsConfig) {
             return (
                 <div>
                     <SidePanel/>
-                    <div key="viewer" style={this.props.layoutUpdates.style || this.props.style}>
-                        {this.renderPlugins(this.props.pluginsConfig[this.props.mode])}
-                    </div>
+                    <PluginsContainer key="viewer" id="viewer"
+                        style={this.props.layoutUpdates.style || this.props.style}
+                        plugins={this.props.plugins}
+                        params={this.props.params}
+                        pluginsConfig={this.pluginsConfig || this.props.pluginsConfig}
+                        mode={this.props.mode}
+                    />
                     <div id="left-edge" onMouseEnter={() => { this.tooglePanel(false); }} onMouseLeave={() => { if (this.timeOut) { clearTimeout(this.timeOut); } }}/>
                     <SouthPanel />
                     <SidePanelBtn />

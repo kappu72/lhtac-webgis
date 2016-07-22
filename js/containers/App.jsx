@@ -16,8 +16,9 @@ const urlQuery = url.parse(window.location.href, true).query;
 const mapType = urlQuery.mapType ? urlQuery.mapType : "leaflet";
 
 require('react-widgets/lib/less/react-widgets.less');
+// require('../../assets/css/mapstore2.css');
+require('../../MapStore2/web/client/product/assets/css/viewer.css');
 require('../../assets/css/lhtac.css');
-require('../../assets/css/mapstore2.css');
 
 const App = (props) => {
     const MapViewer = connect(() => ({

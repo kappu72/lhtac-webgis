@@ -54,6 +54,7 @@ module.exports = (plugins) => {
     };
 
     return DebugUtils.createDebugStore(rootReducer, {
+        controls: {toolbar: {expanded: false}},
         mousePosition: {enabled: false, crs: "EPSG:4326"}
     });
 };

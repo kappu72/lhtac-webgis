@@ -28,10 +28,10 @@ const SidePanelBtn = React.createClass({
     },
     render() {
         return this.props.show ? (
-            <div id="side-button" className={this.props.loading ? "loading" : "default"}>
+            <div id="side-button" className="default">
                 <OverlayTrigger placement="right" overlay={(<Tooltip id="sidePanelBtnTooltip"><Message msgId="lhtac.sideBtnTooltip"/></Tooltip>)}>
-                <Button bsSize="xsmall"
-                onClick={() => this.props.toggleSidePanel(false )}><Glyphicon glyph="menu-hamburger"/></Button>
+                <Button className="square-button" bsStyle="primary"
+                onClick={() => this.props.toggleSidePanel(false )}><Glyphicon glyph="expand"/></Button>
             </OverlayTrigger>
 
             </div>

@@ -19,26 +19,26 @@
 }
 
 #lhac-sidepanel {
-    z-index: 999;
+    z-index: 99;
     position: absolute;
     top: 0;
     width: 450px;
     bottom: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 14px !important;
 }
 
 #lhac-sidepanel .header {
     position: absolute;
     top: 0;
-    height: 42px;
+    height: 30px;
     width: 100%;
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 10px;
     border-bottom: solid 1px #DDD;
     color: white;
-    background-color: rgb(240, 240, 240);
+    background-color: #078AA3 !important;
     margin-top: 0px;
     color: black;
 }
@@ -46,7 +46,7 @@
 #lhac-sidepanel .body {
     overflow: auto;
     position: absolute;
-    top: 42px;
+    top: 30px;
     bottom: 0;
     width: 100%;
     padding-left: 3px;
@@ -101,7 +101,9 @@
     text-transform: uppercase;
     font-size: 12px;
 }
-
+.lhtac-panel, .panel, .panel-default{
+    overflow: visible !important;
+}
 .lhtac-group-list a:hover {
     font-weight: normal;
     background-color: #ddd;
@@ -154,58 +156,38 @@
 
 #feature-selection-bar {
     position: absolute;
-    top: 50px;
-    left: 45px;
+    top: 0px;
+    left: 2px;
     z-index: 100;
 }
-#feature-selection-bar .rw-dropdownlist{
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left:0px;
-    background-color: #dedede
-}
-#feature-selection-bar .input-group-addon{
-
-    background-color: #eeeeee;
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgrey;
-    border-right: 1px solid lightgrey;
-    cursor: pointer;
-}
-#feature-selection-bar .input-group-addon-disabled{
-    background-color: white;
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgrey;
-    border-right: 1px solid lightgrey;
-    cursor: pointer;
-}
-#feature-selection-bar .input-group {
-    box-shadow: 2px 2px 4px #A7A7A7;
-    border-radius: 4px;
-}
-#feature-selection-bar .rw-state-disabled {
-    background-color: white;
+#feature-selection-bar.side-expanded {
+    left: 54px;
 }
 .search-result-list {
     z-index: 2000
 }
 #feature-selection-bar .button-container div{
-    width: 40px;
-    height: 34px;
-    padding: 6px 12px;
-    background-color: white;
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+    background-color: rgb(7, 138, 163);
     cursor: pointer;
     box-sizing: border-box;
     border: 1px solid lightgray;
     box-shadow: 2px 2px 4px #A7A7A7;
     border-radius: 10px;
+    color:white;
+    padding-top: 3px;
+    padding-left: 6px;
+
 }
 #feature-selection-bar .button-container div.pressed{
-    background-color: #eeeeee;
+    background-color: rgb(92, 159, 180);
+;
 }
 .button-container{
-    height: 40px;
-    width: 81px;
+    height: 54px;
+    width: 102px;
 }
 .selector-spinner{
     padding: 8px 3px 3px 8px;
@@ -238,15 +220,22 @@
 }
 #side-button {
     position: absolute;
-    top: 100px;
-    left: 10px;
+    top: 0px;
+    left: 0px;
     z-index: 1000;
-    border-radius: 3px;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.2);
 }
 #side-button.loading{
     top: 130px;
 }
+#side-button .square-button{
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 4px #A7A7A7;
+    border-radius: 10px;
+    color:white;
+}
+
 .active-zone {
     border: 1px solid green;
     padding: 1px;
@@ -259,4 +248,56 @@
 }
 .ag-header-cell-label {
     white-space: normal;
+}
+.leaflet-control-attribution{
+    position: fixed;
+    bottom: 0px;
+    left: calc(50% - 150px);
+    width: 300px;
+}
+#mapstore-mouseposition{
+    width: auto !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    height: auto !important;
+    margin-right: 10px !important;
+}
+.mouseposition-separator {
+    display: inline;
+}
+#mapstore-mouseposition button{
+   margin-left:5px;
+}
+#mapstore-mouseposition .glyphicon-paste:before{
+   font-family: inherit !important
+}
+#lhac-sidepanel .panel-heading{
+    background-color: #078AA3 !important;
+    color:white !important;
+}
+#lhac-sidepanel button{
+    font-size:14px !important;
+    border-radius: 4px;
+    height: 30px;
+    padding-bottom: 5px;
+}
+#lhac-sidepanel button:disabled{
+    color:white;
+}
+.panel-heading{
+    background-color: #078AA3 !important;
+    color:white !important;
+}
+.toolbar-panel{ 
+border-radius: 4px !important;
+}
+#lhac-sidepanel .glyphicon{
+    font-size:20px !important;
+    position: relative;
+    top: 5px;
+}
+body{
+    overflow: hidden;
+}
+#lhtacswitch button{
+    font-size: 14px;
 }
